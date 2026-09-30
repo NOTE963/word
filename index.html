@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>恋バナウルフ</title>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@500;700;900&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#fff3f6;--ink:#3b1030;--card:#fff;--pk:#e23b78;--pk2:#ffd6e5;--lv:#6d4fd0;--mut:#8a6a80;--ln:#f1cddb;--onpk:#fff;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#22102b;--ink:#ffeaf3;--card:#361a40;--pk:#ff6fa3;--pk2:#5b2a58;--lv:#bda9ff;--mut:#c9a3c2;--ln:#5a2f5f;--onpk:#2a0f24}}
+:root[data-theme="dark"]{--bg:#22102b;--ink:#ffeaf3;--card:#361a40;--pk:#ff6fa3;--pk2:#5b2a58;--lv:#bda9ff;--mut:#c9a3c2;--ln:#5a2f5f;--onpk:#2a0f24}
+*,*::before,*::after{box-sizing:inherit}
+html,body{margin:0;background:var(--bg);color:var(--ink);font-family:"Zen Maru Gothic","Hiragino Maru Gothic ProN","Yu Gothic",sans-serif;font-weight:500;line-height:1.7}
+#app{max-width:460px;margin:0 auto;padding:20px 18px 40px;min-height:100vh}
+h1{font-size:2.4rem;font-weight:900;letter-spacing:.04em;margin:28px 0 4px;color:var(--pk)}
+h2{font-size:1.25rem;font-weight:900;margin:8px 0 12px}
+p{margin:0 0 12px}.mut{color:var(--mut);font-size:.9rem}
+.card{background:var(--card);border:2px solid var(--ln);border-radius:22px;padding:18px;margin:14px 0}
+button{font:inherit;font-weight:700;border:0;border-radius:999px;padding:13px 22px;background:var(--pk);color:var(--onpk);width:100%;margin:6px 0;cursor:pointer}
+button.sub{background:transparent;color:var(--lv);border:2px solid var(--ln)}
+button:disabled{opacity:.4}
+button:focus-visible,input:focus-visible{outline:3px solid var(--lv);outline-offset:2px}
+input{font:inherit;width:100%;padding:12px 16px;border-radius:14px;border:2px solid var(--ln);background:var(--card);color:var(--ink);margin:6px 0}
+.chips{display:flex;flex-wrap:wrap;gap:8px}.chip{background:var(--pk2);border-radius:999px;padding:4px 14px;font-weight:700}
+.seal{width:150px;height:150px;border-radius:50%;font-size:3.4rem;margin:16px auto;display:block;box-shadow:0 6px 0 var(--lv)}
+.word{font-size:2rem;font-weight:900;text-align:center;color:var(--pk);padding:24px 0}
+.big{font-size:3rem;font-weight:900;text-align:center;color:var(--lv);font-variant-numeric:tabular-nums}
+.vote{display:flex;justify-content:space-between;align-items:center}
+.err{color:var(--pk);font-weight:700}
+.bar{height:10px;border-radius:9px;background:var(--pk);display:inline-block;vertical-align:middle;margin-left:8px}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/10.12.2/firebase-app-compat.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/10.12.2/firebase-database-compat.min.js"></script>
+<script>
+const firebaseConfig = {
+  apiKey: "AIzaSyCPXBVbdVCYHdop8KTlEQ310p2ZGPIoL04",
+  authDomain: "egg-man-8980e.firebaseapp.com",
+  databaseURL: "https://egg-man-8980e-default-rtdb.firebaseio.com",
+  projectId: "egg-man-8980e",
+  storageBucket: "egg-man-8980e.firebasestorage.app",
+  messagingSenderId: "664061097830",
+  appId: "1:664061097830:web:248329aa1cfadfb6d4baa7",
+  measurementId: "G-9G3C4S54YS"
+};
+
+const PAIRS=[["告白","プロポーズ"],["片思い","一目惚れ"],["壁ドン","顎クイ"],["手つなぎ","腕組み"],["既読スルー","未読スルー"],["遊園地デート","水族館デート"],["嫉妬","束縛"],["初キス","初ハグ"],["幼なじみ","同級生"],["マッチングアプリ","合コン"],["記念日","誕生日"],["同棲","結婚"],["浮気","二股"],["ツンデレ","ヤンデレ"],["ラブレター","LINE告白"],["失恋","喧嘩別れ"],["おうちデート","ドライブデート"],["ギャップ萌え","ひとめぼれ"],["バレンタイン","クリスマス"],["割り勘","奢り"],["初デート","初対面"],["元カレ","元カノ"],["遠距離恋愛","社内恋愛"],["年上彼氏","年下彼氏"],["バックハグ","お姫様抱っこ"],["膝枕","腕枕"],["相合傘","ペアルック"],["お揃い","ペアリング"],["指輪","ネックレス"],["花束","ぬいぐるみ"],["サプライズ","ドッキリ"],["夜景","花火"],["観覧車","ジェットコースター"],["映画館デート","カラオケデート"],["温泉旅行","海外旅行"],["プリクラ","ツーショット"],["電話","ビデオ通話"],["おやすみLINE","おはようLINE"],["スタンプ","絵文字"],["匂わせ","惚気"],["ノロケ","愚痴"],["三角関係","略奪愛"],["禁断の恋","不倫"],["秘密の恋","内緒の関係"],["友達以上恋人未満","親友"],["告白待ち","告白される"],["逆ナン","ナンパ"],["ときめき","胸キュン"],["初恋","憧れ"],["相思相愛","相性抜群"],["運命の人","理想の人"],["結婚式","披露宴"],["新婚旅行","家族旅行"],["婚約","婚姻届"],["両親への挨拶","顔合わせ"],["プロポーズの言葉","告白の言葉"],["夫婦喧嘩","痴話喧嘩"],["仲直り","謝罪"],["別れ話","倦怠期"],["未練","後悔"],["復縁","略奪"],["忘れられない人","初恋の人"],["恋愛相談","恋バナ"],["恋愛占い","血液型占い"],["恋愛ドラマ","少女漫画"],["胸キュン映画","恋愛小説"],["ラブソング","失恋ソング"],["カップル動画","カップルアカウント"],["カップルコーデ","勝負服"],["香水","シャンプーの匂い"],["メイク","髪型"],["ネイル","ヘアアレンジ"],["イメチェン","ダイエット"],["デート前日","デート当日"],["待ち合わせ","お迎え"],["送り迎え","家まで送る"],["手料理","外食"],["お弁当","カフェ"],["ペアマグ","合鍵"],["ホワイトデー","七夕"],["初詣","花火大会"],["夏祭り","イルミネーション"],["誕生日プレゼント","記念日プレゼント"],["手紙","メッセージカード"],["交換日記","LINE"],["お泊まり","日帰り"],["朝帰り","門限"],["亭主関白","かかあ天下"],["尽くす","尽くされる"],["甘える","甘やかす"],["聞き上手","話し上手"],["イケメン","優しい人"],["高身長","高収入"],["塩顔","ソース顔"],["犬系彼氏","猫系彼女"],["王子様","お姫様"],["天然","あざとい"],["小悪魔","女神"],["モテ期","婚活"],["婚活パーティー","街コン"],["お見合い","紹介"],["一途","浮気性"],["惚れっぽい","冷めやすい"],["恋愛脳","現実主義"],["ドキドキ","安心感"],["好きバレ","告白"],["好きなタイプ","理想の恋人"],["見つめ合う","目が合う"],["キス待ち","ハグ待ち"],["頭ポンポン","なでなで"],["ほっぺにチュー","おでこにキス"],["友達に紹介","家族に紹介"],["連絡先交換","SNSフォロー"],["アプリで出会う","街で出会う"]];
+const $=s=>document.querySelector(s), app=$('#app');
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const fmt=ms=>{ms=Math.max(0,ms)/1000|0;return (ms/60|0)+':'+String(ms%60).padStart(2,'0')};
+let page='home',mode=null,S=null,me=null,ref=null,db=null,code='',shown=false,names=[],tick=null,err='';
+
+const ids=()=>S.order||[];
+const nm=i=>esc(S.players[i].name);
+const wordOf=i=>i===S.wolf?S.wl:S.maj;
+
+function upd(p){ if(mode==='online') ref.update(p); else {Object.assign(S,p);render();} }
+
+/* ---------- ホーム / セットアップ ---------- */
+function home(){return `<h1>恋バナウルフ</h1><p class="mut">みんなに配られる恋愛のお題は同じ。ただ1人だけ、少しちがう。話して探そう。</p>
+<div class="card"><h2>1台でまわす</h2><p class="mut">スマホを回して、順番にお題を見る。</p><button onclick="go('setup')">はじめる</button></div>
+<div class="card"><h2>オンラインで遊ぶ</h2><p class="mut">ルーム番号で集まって、それぞれのスマホで遊ぶ。</p><button class="sub" onclick="go('join')">ルームをつくる / 入る</button></div>`}
+function go(p){page=p;err='';render()}
+
+function setup(){return `<h2>参加者(3〜8人)</h2>
+<div class="chips">${names.map((n,i)=>`<span class="chip">${esc(n)} <a href="#" onclick="names.splice(${i},1);render();return false" aria-label="削除">×</a></span>`).join('')}</div>
+<input id="n" maxlength="8" placeholder="ニックネーム" onkeydown="if(event.key==='Enter')addName()">
+<button class="sub" onclick="addName()">追加</button>
+<button ${names.length<3?'disabled':''} onclick="startLocal()">ゲーム開始</button>
+<button class="sub" onclick="go('home')">もどる</button>`}
+function addName(){const v=$('#n').value.trim();if(v&&names.length<8&&!names.includes(v))names.push(v);render();$('#n')&&$('#n').focus()}
+function startLocal(){mode='local';const pl={};names.forEach((n,i)=>pl['p'+i]={name:n});S={players:pl,order:names.map((_,i)=>'p'+i),host:'p0',phase:'lobby',vi:0};start()}
+
+function start(){
+  const o=ids(),pr=PAIRS[Math.random()*PAIRS.length|0],sw=Math.random()<.5?pr:[pr[1],pr[0]];
+  shown=false;
+  upd({phase:'reveal',wolf:o[Math.random()*o.length|0],maj:sw[0],wl:sw[1],votes:null,ri:0,vi:0});
+}
+
+/* ---------- オンライン ---------- */
+function join(){return `<h2>オンライン</h2><input id="n" maxlength="8" placeholder="ニックネーム">
+<button onclick="enter(true)">ルームをつくる</button>
+<input id="c" inputmode="numeric" maxlength="4" placeholder="ルーム番号(4けた)">
+<button class="sub" onclick="enter(false)">この番号で入る</button>
+${err?`<p class="err">${err}</p>`:''}<button class="sub" onclick="go('home')">もどる</button>`}
+
+function connect(){
+  if(db)return Promise.resolve(true);
+  try{firebase.initializeApp(firebaseConfig);db=firebase.database();}catch(e){db=null;return Promise.resolve(false)}
+  return new Promise(r=>{const c=db.ref('.info/connected');
+    const to=setTimeout(()=>{c.off();db=null;r(false)},6000);
+    c.on('value',s=>{if(s.val()){clearTimeout(to);c.off();r(true)}});});
+}
+async function enter(create){
+  const name=$('#n').value.trim(),cv=($('#c')||{}).value;
+  if(!name){err='ニックネームを入れてね';return render()}
+  err='接続中…';render();
+  if(!await connect()){err='オンラインに接続できません。1台モードを使うか、自分のサイトに置いて開いてね。';return render()}
+  me='p'+Math.random().toString(36).slice(2,8);
+  if(create){
+    code=String(1000+Math.random()*9000|0);ref=db.ref('rooms/'+code);
+    await ref.set({host:me,phase:'lobby',players:{[me]:{name}},order:[me]});
+  }else{
+    code=(cv||'').trim();ref=db.ref('rooms/'+code);
+    const s=await ref.get();
+    if(!s.exists()||s.val().phase!=='lobby'){err='入れるルームが見つかりません';return render()}
+    if(Object.keys(s.val().players).length>=8){err='満員です';return render()}
+    await ref.child('players/'+me).set({name});
+    await ref.child('order').transaction(o=>[...(o||[]),me]);
+  }
+  mode='online';err='';
+  ref.on('value',s=>{S=s.val();if(!S){leave();return}render()});
+}
+function leave(){if(ref)ref.off();ref=null;S=null;mode=null;me=null;page='home';shown=false;render()}
+const isHost=()=>mode==='local'||me===S.host;
+
+function lobby(){return `<h2>ルーム ${esc(code)}</h2><p class="mut">この番号をみんなに伝えてね。</p>
+<div class="chips">${ids().map(i=>`<span class="chip">${nm(i)}</span>`).join('')}</div>
+${isHost()?`<button ${ids().length<3?'disabled':''} onclick="start()">ゲーム開始(3人〜)</button>`:'<p class="mut">ホストの開始を待っています…</p>'}
+<button class="sub" onclick="leave()">ぬける</button>`}
+
+/* ---------- ゲーム進行 ---------- */
+function reveal(){
+  if(mode==='local'){
+    const id=ids()[S.ri];
+    if(!shown)return `<h2>${nm(id)}さんの番</h2><p class="mut">他の人に見えないように、端末を受け取ってね。</p><button onclick="shown=true;render()">${nm(id)}です。お題を見る</button>`;
+    return `<h2>${nm(id)}さんのお題</h2><div class="card"><div class="word">${esc(wordOf(id))}</div></div><p class="mut">覚えたら次の人へ渡そう。</p><button onclick="nextReveal()">覚えた</button>`;
+  }
+  return `<h2>あなたのお題</h2><p class="mut">ハートをタップで表示 / 非表示。</p>
+  <button class="seal" aria-label="お題を見る" onclick="shown=!shown;render()">♥</button>
+  ${shown?`<div class="card"><div class="word">${esc(wordOf(me))}</div></div>`:''}
+  ${isHost()?'<button onclick="talk()">話し合いスタート</button>':'<p class="mut">全員が見終わったらホストが始めます。</p>'}`;
+}
+function nextReveal(){shown=false;S.ri++;S.ri>=ids().length?talk():render()}
+function talk(){shown=false;upd({phase:'talk',end:Date.now()+18e4})}
+
+function talkV(){return `<h2>話し合い</h2><div class="big" id="t">${fmt(S.end-Date.now())}</div>
+<div class="card"><p>お題を直接言わずに、「それってどんなとき?」と質問し合おう。自分のお題が少数派だと感じたら、うまく合わせよう。</p></div>
+${isHost()?'<button onclick="upd({phase:\'vote\'})">投票へ</button>':'<p class="mut">ホストが投票を始めます。</p>'}`}
+
+function voteV(){
+  const v=S.votes||{},n=ids().length;
+  if(mode==='local'){
+    const id=ids()[S.vi];
+    if(!shown)return `<h2>投票 ${S.vi+1}/${n}</h2><p class="mut">端末を${nm(id)}さんに渡してね。</p><button onclick="shown=true;render()">${nm(id)}です</button>`;
+    return `<h2>${nm(id)}さん、だれがオオカミ?</h2>${ids().filter(i=>i!==id).map(i=>`<button class="sub" onclick="castLocal('${i}')">${nm(i)}</button>`).join('')}`;
+  }
+  if(v[me])return `<h2>投票ずみ</h2><p class="mut">みんなを待っています(${Object.keys(v).length}/${n})</p>`;
+  return `<h2>だれがオオカミ?</h2>${ids().filter(i=>i!==me).map(i=>`<button class="sub" onclick="ref.update({'votes/${me}':'${i}'})">${nm(i)}</button>`).join('')}`;
+}
+function castLocal(t){const id=ids()[S.vi];S.votes=S.votes||{};S.votes[id]=t;S.vi++;shown=false;S.vi>=ids().length?upd({phase:'result'}):render()}
+
+function result(){
+  const v=S.votes||{},c={};Object.values(v).forEach(t=>c[t]=(c[t]||0)+1);
+  const mx=Math.max(0,...Object.values(c)),top=ids().filter(i=>c[i]===mx);
+  const caught=top.length===1&&top[0]===S.wolf;
+  return `<h2>${caught?'オオカミを見つけた!':'オオカミの勝ち!'}</h2>
+  <div class="card">${ids().map(i=>`<div class="vote"><span>${nm(i)}${i===S.wolf?' 🐺':''}</span><span>${c[i]||0}票<span class="bar" style="width:${(c[i]||0)*24}px"></span></span></div>`).join('')}</div>
+  <div class="card"><p class="mut">みんなのお題</p><div class="word" style="padding:6px 0">${esc(S.maj)}</div>
+  <p class="mut">オオカミ(${nm(S.wolf)})のお題</p><div class="word" style="padding:6px 0;color:var(--lv)">${esc(S.wl)}</div></div>
+  ${caught?'<p>見つかったオオカミは、みんなのお題を当てられたら逆転勝ち!</p>':''}
+  ${isHost()?'<button onclick="start()">もう一度</button>':'<p class="mut">ホストが次を始めます。</p>'}
+  <button class="sub" onclick="leave()">ホームへ</button>`;
+}
+
+function render(){
+  clearInterval(tick);
+  app.innerHTML=S?({lobby,reveal,talk:talkV,vote:voteV,result}[S.phase]||home)():({home,setup,join}[page])();
+  if(S&&S.phase==='talk')tick=setInterval(()=>{const e=$('#t');if(e)e.textContent=fmt(S.end-Date.now())},500);
+  if(mode==='online'&&S&&S.phase==='vote'&&me===S.host&&Object.keys(S.votes||{}).length>=ids().length)upd({phase:'result'});
+  if(mode==='online'&&S&&S.phase!=='reveal')shown=false;
+}
+render();
+</script>
+</body>
+</html>
