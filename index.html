@@ -3,176 +3,541 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>恋バナウルフ</title>
-<link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@500;700;900&display=swap" rel="stylesheet">
+<title>レウスパーティ</title>
 <style>
-:root{--bg:#fff3f6;--ink:#3b1030;--card:#fff;--pk:#e23b78;--pk2:#ffd6e5;--lv:#6d4fd0;--mut:#8a6a80;--ln:#f1cddb;--onpk:#fff;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#22102b;--ink:#ffeaf3;--card:#361a40;--pk:#ff6fa3;--pk2:#5b2a58;--lv:#bda9ff;--mut:#c9a3c2;--ln:#5a2f5f;--onpk:#2a0f24}}
-:root[data-theme="dark"]{--bg:#22102b;--ink:#ffeaf3;--card:#361a40;--pk:#ff6fa3;--pk2:#5b2a58;--lv:#bda9ff;--mut:#c9a3c2;--ln:#5a2f5f;--onpk:#2a0f24}
-*,*::before,*::after{box-sizing:inherit}
-html,body{margin:0;background:var(--bg);color:var(--ink);font-family:"Zen Maru Gothic","Hiragino Maru Gothic ProN","Yu Gothic",sans-serif;font-weight:500;line-height:1.7}
-#app{max-width:460px;margin:0 auto;padding:20px 18px 40px;min-height:100vh}
-h1{font-size:2.4rem;font-weight:900;letter-spacing:.04em;margin:28px 0 4px;color:var(--pk)}
-h2{font-size:1.25rem;font-weight:900;margin:8px 0 12px}
-p{margin:0 0 12px}.mut{color:var(--mut);font-size:.9rem}
-.card{background:var(--card);border:2px solid var(--ln);border-radius:22px;padding:18px;margin:14px 0}
-button{font:inherit;font-weight:700;border:0;border-radius:999px;padding:13px 22px;background:var(--pk);color:var(--onpk);width:100%;margin:6px 0;cursor:pointer}
-button.sub{background:transparent;color:var(--lv);border:2px solid var(--ln)}
-button:disabled{opacity:.4}
-button:focus-visible,input:focus-visible{outline:3px solid var(--lv);outline-offset:2px}
-input{font:inherit;width:100%;padding:12px 16px;border-radius:14px;border:2px solid var(--ln);background:var(--card);color:var(--ink);margin:6px 0}
-.chips{display:flex;flex-wrap:wrap;gap:8px}.chip{background:var(--pk2);border-radius:999px;padding:4px 14px;font-weight:700}
-.seal{width:150px;height:150px;border-radius:50%;font-size:3.4rem;margin:16px auto;display:block;box-shadow:0 6px 0 var(--lv)}
-.word{font-size:2rem;font-weight:900;text-align:center;color:var(--pk);padding:24px 0}
-.big{font-size:3rem;font-weight:900;text-align:center;color:var(--lv);font-variant-numeric:tabular-nums}
-.vote{display:flex;justify-content:space-between;align-items:center}
-.err{color:var(--pk);font-weight:700}
-.bar{height:10px;border-radius:9px;background:var(--pk);display:inline-block;vertical-align:middle;margin-left:8px}
+:root{--bg:#f7f3f0;--card:#fffdfb;--ink:#2a2125;--sub:#8b7c82;--acc:#a8324f;--line:#e6dcd8;--soft:#f1e8e5;--serif:"Hiragino Mincho ProN","Yu Mincho","Noto Serif JP",serif}
+@media (prefers-color-scheme:dark){:root{--bg:#18131a;--card:#221b24;--ink:#f3eaee;--sub:#a8969f;--acc:#e5748f;--line:#3a2f3a;--soft:#2c222d}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,"Hiragino Sans","Noto Sans JP",sans-serif;min-height:100vh;display:flex;justify-content:center;padding:env(safe-area-inset-top,0) 0 env(safe-area-inset-bottom,0)}
+main{width:100%;max-width:460px;padding:34px 22px 40px}
+.eyebrow{text-align:center;font-size:11px;font-weight:700;letter-spacing:.34em;color:var(--acc)}
+h1{font-family:var(--serif);font-size:32px;text-align:center;margin:12px 0 0;letter-spacing:.1em;font-weight:700}
+.rule{width:34px;height:2px;background:var(--acc);margin:18px auto}
+.sub{text-align:center;color:var(--sub);font-size:13px;line-height:1.8;margin:0 0 22px}
+label{display:block;font-size:12px;font-weight:700;letter-spacing:.12em;color:var(--sub);margin:22px 0 8px}
+input{width:100%;padding:14px;font-size:16px;border:1px solid var(--line);border-radius:10px;background:var(--card);color:var(--ink);outline:none;transition:border-color .2s}
+input:focus{border-color:var(--acc)}
+button{font-family:inherit;cursor:pointer;transition:opacity .2s,transform .1s}
+button:active{transform:scale(.98)}
+.main{width:100%;margin-top:16px;padding:16px;font-size:15px;font-weight:700;letter-spacing:.16em;border:0;border-radius:10px;background:var(--ink);color:var(--bg)}
+.main:disabled{opacity:.3;cursor:default}
+.ghost{width:100%;margin-top:12px;padding:14px;font-size:13px;letter-spacing:.1em;border-radius:10px;border:1px solid var(--line);background:transparent;color:var(--ink)}
+.hide{display:none}
+.code{font-family:var(--serif);text-align:center;font-size:50px;letter-spacing:.3em;padding:10px 0 10px .3em;border-top:1px solid var(--line);border-bottom:1px solid var(--line);margin:10px 0 0}
+.list{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:20px 0}
+.pl{display:inline-flex;align-items:center;gap:8px;padding:6px 14px 6px 6px;border-radius:999px;background:var(--card);border:1px solid var(--line);font-size:14px;font-weight:600}
+.pl b{width:26px;height:26px;border-radius:50%;background:var(--soft);color:var(--acc);display:flex;align-items:center;justify-content:center;font-size:13px}
+.pl.h::after{content:"HOST";font-size:9px;letter-spacing:.14em;color:var(--acc);font-weight:700}
+.box{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px 22px 24px;margin-top:14px;box-shadow:0 14px 34px rgba(70,30,45,.07)}
+.lab{display:flex;justify-content:space-between;font-size:11px;font-weight:700;letter-spacing:.22em;color:var(--sub);margin-bottom:14px}
+#topic{font-family:var(--serif);font-size:19px;line-height:1.85;min-height:112px;display:flex;align-items:center;font-weight:600;transition:opacity .15s,filter .15s}
+#topic.spin{opacity:.35;filter:blur(2px)}
+#pick{font-family:var(--serif);font-size:38px;font-weight:700;color:var(--acc);min-height:58px;letter-spacing:.06em;transition:opacity .15s}
+#pick.spin{opacity:.3}
+.pop{animation:pop .55s cubic-bezier(.2,1.3,.4,1)}
+@keyframes pop{0%{transform:scale(.88);opacity:0}100%{transform:scale(1);opacity:1}}
+#msg{font-family:var(--serif);text-align:center;font-size:15px;line-height:1.8;margin-top:20px;min-height:28px}
+.hint{text-align:center;font-size:12px;color:var(--sub);line-height:1.8;margin-top:14px}
+.cnt{text-align:center;font-size:11px;letter-spacing:.08em;color:var(--sub);margin-top:26px;line-height:1.9}
+#vote .opt{display:block;width:100%;padding:16px;margin-top:10px;border-radius:12px;border:1px solid var(--line);background:var(--card);color:var(--ink);font-family:var(--serif);font-size:16px;font-weight:600;line-height:1.6}
+#vote .opt.sel{border-color:var(--acc);background:var(--soft);color:var(--acc)}
+.res{margin-top:10px;padding:14px 16px;border:1px solid var(--line);border-radius:12px;background:var(--card)}
+.res.win{border-color:var(--acc)}
+.rtop{display:flex;justify-content:space-between;gap:10px;font-family:var(--serif);font-weight:600;font-size:15px}
+.rc{color:var(--acc);white-space:nowrap}
+.bar{height:6px;background:var(--soft);border-radius:3px;margin:10px 0 8px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--acc);transition:width .6s}
+.rn2{font-size:12px;color:var(--sub);line-height:1.7}
+#sayTa{display:block;width:100%;padding:14px;font-size:16px;font-family:inherit;border:1px solid var(--line);border-radius:10px;background:var(--card);color:var(--ink);resize:none;outline:none;margin-top:10px}
+#sayTa:focus{border-color:var(--acc)}
+.ans{padding:14px 16px;margin-top:10px;border:1px solid var(--line);border-radius:12px;background:var(--card)}
+.an{font-size:12px;color:var(--acc);font-weight:700;letter-spacing:.1em;margin-bottom:6px}
+.at{font-family:var(--serif);font-size:16px;line-height:1.7;white-space:pre-wrap;word-break:break-word}
+#drCv{display:block;width:100%;aspect-ratio:1;border:1px solid var(--line);border-radius:12px;background:#fff;touch-action:none;margin-top:10px}
+#drTm{font-family:var(--serif);font-size:28px;text-align:center;color:var(--acc);letter-spacing:.1em}
+.tools{display:flex;gap:10px;align-items:center;justify-content:center;margin-top:14px;flex-wrap:wrap}
+.sw{width:30px;height:30px;border-radius:50%;border:2px solid var(--line);padding:0}
+.sw.on{outline:2px solid var(--acc);outline-offset:2px}
+.tl{padding:8px 12px;font-size:12px;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:8px}
+img.dr{width:100%;border-radius:8px;border:1px solid var(--line);background:#fff;display:block}
+.modes{display:flex;gap:8px}
+.mb{flex:1;padding:13px 8px;font-size:14px;font-weight:700;letter-spacing:.06em;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:10px}
+.mb.on{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.mb:disabled{opacity:1;cursor:default}
+.pl em{font-style:normal;color:var(--acc);font-size:12px;font-weight:700}
+.fig{display:block;width:100%;max-width:300px;margin:10px auto;border:1px solid var(--line);border-radius:12px;background:#fff}
+#vote .opt.vt{text-align:left}
+#vote .opt.vt img{max-height:220px;object-fit:contain}
+#vote .opt:disabled{opacity:.45}
+html,body{overscroll-behavior:none}
+#drCv{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;-webkit-tap-highlight-color:transparent}
+.hm{flex:1;padding:13px 8px;font-size:14px;font-weight:700;letter-spacing:.06em;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:10px}
+.hm.on{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.modeTag{text-align:center;font-size:12px;font-weight:700;letter-spacing:.24em;color:var(--acc);margin-top:14px}
 </style>
 </head>
 <body>
-<div id="app"></div>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/10.12.2/firebase-app-compat.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/10.12.2/firebase-database-compat.min.js"></script>
+<main>
+<section id="home">
+<div class="eyebrow">LEUS PARTY</div>
+<h1>レウスパーティ</h1>
+<div class="rule"></div>
+<p class="sub">暴露モードと大喜利モードで遊ぶ<br>オンラインパーティゲーム</p>
+<label>あなたの名前</label>
+<input id="name" maxlength="10" placeholder="例：あや">
+<label>モードを選んでルームを作る</label>
+<div class="modes"><button class="hm on" data-m="bakuro">暴露モード</button><button class="hm" data-m="wolf">ワードウルフ</button></div>
+<div class="hint" id="homeDesc" style="margin:8px 0 0"></div>
+<button class="main" id="create">ルームを作る</button>
+<label>ルーム番号で参加</label>
+<input id="codeIn" inputmode="numeric" maxlength="4" placeholder="4桁の番号">
+<button class="ghost" id="join">参加する</button>
+<div id="err" style="color:#c0392b;text-align:center;margin-top:14px;font-size:13px"></div>
+</section>
+
+<section id="room" class="hide">
+<div class="eyebrow">ROOM</div>
+<div class="code" id="code"></div>
+<div class="list" id="players"></div>
+<div class="modeTag" id="modeTag"></div>
+<div class="hint" id="modeDesc" style="margin:8px 0 18px"></div>
+<div id="game" class="hide">
+<div class="box"><div class="lab"><span>TOPIC</span><span id="rn"></span></div><div id="topic"></div></div>
+<div class="box" id="pickBox"><div class="lab"><span>ANSWERER</span></div><div id="pick"></div></div>
+<div id="vote" class="hide"></div>
+<div id="msg"></div>
+<div class="hint">名前を聞かれたときは、フルネーム・下の名前・イニシャル・あだ名のどれでもOK</div>
+</div>
+<div id="wait" class="sub"></div>
+<button class="main" id="draw">ゲームスタート</button>
+<button class="ghost" id="leave">退出する</button>
+<div class="cnt">収録お題 <span id="total"></span> 通り<br>全員が抜けるとルームは削除されます</div>
+</section>
+</main>
+
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 <script>
+// ===== お題を組み合わせで生成（2000通り以上） =====
+var set={},TOPICS=[];
+function add(t){if(!set[t]){set[t]=1;TOPICS.push(t)}}
+function each(a,b,f){a.forEach(function(x){b.forEach(function(y){add(f(x,y))})})}
+function pairs(l,f){for(var i=0;i<l.length;i++)for(var j=i+1;j<l.length;j++)add(f(l[i],l[j]))}
+
+// 1) 範囲 × 人物の条件
+var SC=["今のクラスで","学年全体で","部活で","同じ塾や習い事で","小学校の同級生の中で","今までに出会った人の中で","この学校全体で","先輩の中で","後輩の中で","自分の周りで","友達グループの中で","この部屋のメンバーの中で","委員会や係の中で","他のクラスで","今まで同じクラスだった人の中で","通学路で見かける人の中で","部活の同級生の中で","幼なじみの中で"];
+var AT=["一番優しいと思う人","一番かっこいい・かわいいと思う人","一番笑顔が素敵な人","一番面白い人","一番モテそうな人","一番ピュアそうな人","一番告白が上手そうな人","一番尽くしてくれそうな人","一番ヤキモチを焼きそうな人","一番恋愛経験が多そうな人","一番恋愛に奥手そうな人","付き合ってみたい人","告白されたらOKしそうな人","一緒に帰りたい人","席が隣になったらうれしい人","LINEが来たらうれしい人","なんとなく目で追ってしまう人","話すと緊張する人","相談したら親身に聞いてくれそうな人","一緒にいて一番落ち着く人","一緒に文化祭を回りたい人","修学旅行で同じ班になりたい人","ちょっと気になっている人","実は意識している人","友達に紹介したい人","守ってあげたくなる人","頼りにしている人","憧れている人","勉強を教えてもらいたい人","手作りのお菓子をあげたい人","誕生日を祝いたい人","名前を呼ばれたらドキッとする人","笑わせたい人","一番話しやすい人","一番ギャップがありそうな人","将来大物になりそうな人","一番努力家だと思う人","一番センスがいいと思う人","一番声がいいと思う人","一番字がきれいな人","一番運動神経がいいと思う人","一番頭がいいと思う人","一番おしゃれだと思う人","一番天然だと思う人","一番聞き上手だと思う人","一番気配りができる人","一番頼りになる人","一番クールな人","密かに応援している恋の相手","友達に取られたくない人"];
+each(SC,AT,function(s,a){return s+"、"+a+"の名前を暴露して"});
+
+// 2) 経験した相手 × 答え方
+var TG=["初恋の人","今の好きな人","前に好きだった人","一番最近ドキドキした相手","告白しようか迷っている人","告白されたことがある相手","気になっている先輩","気になっている後輩","片思い中の人","憧れている人","友達に隠している気になる人","最初に好きになった人","一番長く片思いした人","一番ドキッとさせられた人","勇気を出して話しかけた相手","連絡先を聞いた相手","手紙を書いた相手","プレゼントを渡した相手","一緒に帰ったことがある人","好きバレしてしまった相手","友達と好きな人がかぶった相手","恋愛相談をされた相手","恋愛相談をした相手","夢に出てきた人","ヤキモチを焼いた相手","目が合ってそらしてしまった人","話しかけられてうれしかった人","名前を呼ばれてドキッとした人","笑顔にやられた人","勉強を教えてもらった人","傘に入れてもらった人","席替えで隣になった人","同じ班になってうれしかった人","部活の応援に行った相手","バレンタインを渡したい人","誕生日を祝った人","周りに冷やかされた相手","噂になったことがある相手","友達に紹介したい人"];
+var ST=["フルネームで","下の名前だけで","イニシャルで","あだ名で","ヒントを出しながら","頭文字と特徴をひとつ添えて"];
+each(TG,ST,function(t,s){return t+"の名前を"+s+"暴露して"});
+
+// 3) 時期 × 人物
+var TM=["小学校低学年の頃","小学校高学年の頃","中1になったばかりの頃","中1の秋","中2の春","中2の夏","中2の冬","中3になった頃","受験を意識し始めた頃","体育祭の頃","文化祭の頃","修学旅行の頃","夏休み前","冬休み前","バレンタインの頃","去年の今ごろ","今年の春","先月","先週","クラス替えの頃","席替えの頃","部活に入ったばかりの頃","遠足の頃","合唱コンクールの頃"];
+var TV=["好きだった人","気になっていた人","目で追っていた人","話しかけたかった人","仲良くなりたかった人","告白しようと思った人","ヤキモチを焼いた相手","一番ドキドキした相手","連絡を待っていた相手","一緒に帰りたかった人","ひそかに憧れていた人","友達に隠していた気になる人"];
+each(TM,TV,function(t,v){return t+"、"+v+"の名前を暴露して"});
+
+// 4) もしも〜なら誰と
+var WS=["席替えで隣になるなら","修学旅行で同じ班になるなら","文化祭を一緒に回るなら","一緒に帰るなら","日直を組むなら","体育祭で二人三脚をするなら","フォークダンスを踊るなら","花火大会に行くなら","初詣に行くなら","映画を見に行くなら","遊園地に行くなら","水族館に行くなら","勉強を教えてもらうなら","部活の応援に来てほしいなら","電話で話すなら","誕生日を祝ってほしいなら","手作りのお菓子をもらうなら","手紙をもらうなら","告白されるなら","隣で給食を食べるなら","お弁当を作ってもらうなら","相合傘をするなら","写真を一緒に撮るなら","悩みを相談するなら","卒業式に会いたいなら","同窓会で再会したいなら","自習中に隣にいてほしいなら","一緒に委員会をするなら","一緒に掃除当番をするなら","同じ係になるなら","グループ発表を組むなら","席が前後になるなら","放課後に残って話すなら","図書館で一緒に勉強するなら","夏祭りに行くなら","一緒にカラオケに行くなら","自転車で一緒に帰るなら","遠足でお弁当を食べるなら","バスで隣に座るなら","肝試しのペアを組むなら","キャンプで同じ班になるなら","風邪のお見舞いに来てほしいなら","誕生日プレゼントを選ぶなら","クリスマスに会うなら","試合を見に来てほしいなら","ペアで調理実習をするなら","学級委員を一緒にやるなら","合唱コンクールで隣に並ぶなら"];
+var WX=["一番に思い浮かぶ人の名前を暴露して","誰とがいいか名前を暴露して。理由もひとこと","本命とダークホース、2人の名前を暴露して","候補を3人、名前で暴露して","相手の名前をイニシャルで暴露して","相手の名前をあだ名で暴露して","ヒントを出しながら名前を暴露して","思い浮かんだ人の下の名前を暴露して"];
+each(WS,WX,function(w,x){return w+"、"+x});
+
+// 5) タイプ二択 × 名前
+var TY=["優しい人","面白い人","頭がいい人","運動ができる人","おしゃれな人","笑顔が素敵な人","声がいい人","字がきれいな人","しっかりしている人","天然な人","気配りができる人","誰にでも平等な人","ちょっとクールな人","明るい人","真面目な人","絵や音楽が得意な人","背が高い人","聞き上手な人","話しやすい人","努力家な人","頼りになる人","守ってあげたくなる人","ミステリアスな人","素直な人","負けず嫌いな人","責任感のある人","少しシャイな人","静かで落ち着いた人"];
+pairs(TY,function(a,b){return "「"+a+"」と「"+b+"」、付き合うならどっち？そのタイプで思い浮かぶ人の名前を暴露して"});
+pairs(TY,function(a,b){return "「"+a+"」と「"+b+"」、告白されたらOKしやすいのはどっち？そのタイプの知り合いの名前を暴露して"});
+pairs(TY,function(a,b){return "「"+a+"」と「"+b+"」、一緒にいて落ち着くのはどっち？そのタイプで思い浮かぶ人の名前を暴露して"});
+
+// 6) 場所・過ごし方の二択 × 名前
+var PL=["遊園地","水族館","動物園","映画館","図書館","カフェ","ショッピングモール","公園","花火大会","夏祭り","カラオケ","ゲームセンター","ボウリング","海","プール","美術館","プラネタリウム","初詣","イルミネーション","本屋","スイーツのお店","科学館","動物カフェ","ピクニック"];
+pairs(PL,function(a,b){return "「"+a+"」と「"+b+"」、デートで行きたいのはどっち？一緒に行きたい人の名前を暴露して"});
+var AC=["一緒に帰る","一緒に勉強する","ゲームをする","カラオケに行く","映画を見る","買い物に行く","散歩する","お祭りに行く","写真を撮る","ごはんを食べる","電話で話す","部活を見学する","図書館で過ごす","公園で話す"];
+pairs(AC,function(a,b){return "放課後は「"+a+"」と「"+b+"」、どっちをしたい？一緒にしたい人の名前を暴露して"});
+
+// 7) タイプ系
+var TP=["好きなタイプ","苦手なタイプ","理想の恋人","初恋の人","今の好きな人"];
+var TA=["性格","顔の系統","髪型","身長","声","話し方","笑い方","服装","雰囲気","趣味","得意なこと","仕草","口ぐせ","年齢（年上・年下・同い年）","目","歩き方","第一印象","良いところ","気になるところ","名前の響き"];
+each(TP,TA,function(p,a){return p+"の"+a+"は？"});
+var LV=["尽くすタイプ","尽くされたいタイプ","追いかけるタイプ","追いかけられたいタイプ","一途なタイプ","気が多いタイプ","甘えたいタイプ","甘えられたいタイプ","連絡マメなタイプ","連絡ゆるいタイプ","ひとりの時間が大事なタイプ","ずっと一緒にいたいタイプ","自分から告白する派","告白される派","友達から恋人になる派","一目惚れ派","ヤキモチ焼きなタイプ","気持ちを隠すタイプ","ストレートに伝えるタイプ","照れ屋なタイプ"];
+pairs(LV,function(a,b){return "あなたは「"+a+"」と「"+b+"」、どっち寄り？理由も教えて"});
+
+// 8) シンプルなお題
+var SP=["好きなタイプを一言で言うと？","今、好きな人はいる？いるなら名前を暴露して","初恋はいつ？相手の名前も暴露して","告白されたい場所は？","告白したい場所は？","好きな人にひとこと伝えるなら？","一目惚れしたことある？相手の名前も暴露して","片思い歴は最長でどれくらい？","付き合うなら年上？年下？同い年？","告白は自分からする？待つ？","今までで一番ドキドキした瞬間は？","好きな人に言われてうれしい言葉は？","好きな人にされてうれしいことは？","デートで行きたい場所は？","初デートで着ていきたい服は？","理想のプロポーズは？","好きな人のどこを一番に見る？","異性の友達は何人いる？","親友に恋愛相談はする？","好きな人ができたら誰に最初に話す？","告白されたことはある？","告白したことはある？","振られたことはある？その時どうした？","振ったことはある？その時どう思った？","両思いになったことはある？","好きな人とLINEするときの話題は？","返信は早い派？遅い派？","好きな人からの返信、何分以内なら早いと思う？","恋愛ソングで好きな曲は？","好きな人に見せたくない一面は？","自分の恋愛あるあるを一つ言うと？","恋愛で絶対に譲れないことは？","恋人にしてほしくないことは？","恋人にしてあげたいことは？","一緒に行きたい旅行先は？","呼ばれたいあだ名は？","呼ばれたい呼び方（呼び捨て・くん・さん）は？","手作りのお菓子をあげるなら何？","バレンタインに渡したい相手の名前を暴露して","誕生日を一番祝いたい人の名前を暴露して","今日いちばん話したい人の名前を暴露して","この部屋のメンバーで一番仲良くなりたい人は？","この部屋のメンバーの中で、恋愛相談をしたい人は？","この部屋のメンバーの中で、一番モテると思う人は？","この部屋のメンバーの中で、恋愛経験が多そうな人は？","この部屋のメンバーの中で、一番ピュアそうな人は？","この部屋のメンバーの中で、一番告白が上手そうな人は？","この部屋のメンバーの中で、付き合ったら尽くしてくれそうな人は？","この部屋のメンバーの中で、ヤキモチを焼きそうな人は？","この部屋のメンバーの中で、デートが楽しそうな人は？","好きな人のイニシャルを暴露して","好きな人の学年を暴露して","好きな人の部活を暴露して","好きな人の好きなところを3つ暴露して","好きな人とのエピソードを一つ暴露して","初恋のエピソードを暴露して","最近キュンとした出来事を暴露して","一番恥ずかしかった恋愛の失敗を暴露して","今まで誰にも言っていない恋バナを暴露して","好きな人にまだ言えていないことを暴露して","友達に隠している気になる人の特徴を暴露して","今、一番気になる人のタイプを暴露して","告白しようか迷っている人はいる？","もし今日告白されたらOKする？","もし明日告白するなら、誰に？名前を暴露して","クラスで付き合ってほしいカップルの名前を暴露して","クラスで実は両思いだと思うペアの名前を暴露して","学年で一番人気がありそうな人の名前を暴露して","自分の恋愛を点数にすると何点？理由も教えて","自分のモテ度を10点満点で言うと？","いま恋愛にかける熱量は10点満点でいくつ？","理想のデートプランを1分で話して","理想の告白シーンを一言で説明して","好きな人に初めて話しかけるときの一言は？"];
+SP.forEach(add);
+
+// 9) 多数決お題
+var VOTES=[],vset={};
+function addV(q,a,b){var k=q+"|"+a+"|"+b;if(!vset[k]){vset[k]=1;VOTES.push({q:q,a:a,b:b})}}
+function vpairs(l,qs){for(var i=0;i<l.length;i++)for(var j=i+1;j<l.length;j++)qs.forEach(function(q){addV(q,l[i],l[j])})}
+vpairs(TY,["付き合うならどっちのタイプ？","告白されたらOKしやすいのはどっち？","一緒にいて落ち着くのはどっち？","相談したくなるのはどっち？","修学旅行で同じ班になりたいのはどっち？","つい目で追ってしまうのはどっち？"]);
+vpairs(PL,["デートで行きたいのはどっち？","友達と遊びに行きたいのはどっち？","初デートにふさわしいのはどっち？"]);
+vpairs(AC,["放課後にしたいのはどっち？","好きな人と過ごしたいのはどっち？"]);
+vpairs(LV,["自分はどっち寄り？"]);
+[["告白は？","自分からする","待つ"],["付き合うなら？","年上","年下"],["連絡は？","毎日したい","たまにでいい"],["デートは？","インドア","アウトドア"],["告白の方法は？","直接会って","LINEで"],["恋人には？","尽くしたい","尽くされたい"],["好きな人の前では？","素直になる","ツンツンしてしまう"],["初恋は？","覚えている","あまり覚えていない"],["片思いと両思いなら？","片思いの方がドキドキする","両思いの方が幸せ"],["好きな人ができたら？","すぐ友達に話す","ずっと秘密にする"],["付き合う前の期間は？","長い方がいい","短い方がいい"],["恋愛と友情なら？","恋愛が大事","友情が大事"],["好きな人の呼び方は？","呼び捨て","さん・くん付け"],["デートの待ち合わせは？","現地集合","一緒に行く"],["恋人の条件は？","顔が好み","性格が合う"],["一目惚れは？","する","しない"],["プレゼントは？","形に残るもの","消えもの"],["記念日は？","毎月祝いたい","大事な日だけでいい"],["ケンカしたら？","自分から謝る","相手を待つ"],["恋人との時間は？","毎日会いたい","週末だけで十分"],["告白するなら？","放課後","休日"],["恋人にするなら？","同じクラスの人","他のクラスの人"],["恋人にするなら？","同じ部活の人","違う部活の人"],["好きな人と同じ班なら？","うれしい","緊張して困る"],["バレンタインは？","手作りを渡す","市販のものを渡す"],["好きな人にしたいのは？","相談","告白"],["恋愛相談するなら？","同性の友達","異性の友達"],["恋人の連絡頻度は？","多めがいい","少なめがいい"],["思い出に残るのは？","大きなイベント","何気ない日常"],["理想のカップルは？","いつも一緒の二人","それぞれの時間も大切にする二人"],["モテるなら？","たくさんの人に好かれたい","一人に深く愛されたい"],["付き合うなら？","面白い人","優しい人"],["好きな人の第一印象は？","大事","そこまで気にしない"],["振られたら？","すぐ次を探す","しばらく引きずる"],["告白されたら？","すぐ返事する","時間をもらう"],["恋愛ドラマは？","好き","あまり見ない"],["友達の恋は？","全力で応援する","見守る"],["好きな人のSNSは？","よく見る","あまり見ない"],["好きな人にもらうなら？","手紙","プレゼント"],["恋人に見せたいのは？","かっこいい・かわいい自分","ありのままの自分"],["恋人との旅行は？","計画しっかり","ノープラン"]].forEach(function(v){addV(v[0],v[1],v[2])});
+
+// 10) 指名投票（この中で一番〜な人）
+var MP=["将来結婚が早そうな人","一番浮気しなさそうな人","恋に落ちるのが早そうな人","恋愛相談に向いている人","告白されたことが多そうな人","付き合ったら楽しそうな人","デートで頼りになりそうな人","連絡がマメそうな人","片思いが長そうな人","一目惚れしやすそうな人","振られても立ち直りが早そうな人","記念日を覚えていそうな人","サプライズが得意そうな人","照れ屋そうな人","ツンデレそうな人","好きな人の前で挙動不審になりそうな人","好きバレしやすそうな人","嘘が下手そうな人","秘密を守れそうな人","恋人に甘えそうな人","恋人を甘やかしそうな人","手紙を書きそうな人","告白を断れなさそうな人","好きな人のために頑張りそうな人","恋愛より友情を選びそうな人","初恋がまだ続いていそうな人","実は片思い中そうな人","実は恋愛経験が豊富そうな人","実はモテていそうな人","実は一途そうな人","好きな人に積極的に話しかけそうな人","告白を待つタイプの人","自分から告白しそうな人","恋人の前でキャラが変わりそうな人","一緒にいて飽きなさそうな人","ヤキモチを隠せなさそうな人","ラブソングを聴いて泣きそうな人"];
+var PVQ=[],pset={};
+AT.concat(MP).forEach(function(a){["この中で、"+a+"は誰？","せーので指名！"+a+"は？","全員で投票：メンバーの中で"+a+"は誰？"].forEach(function(q){if(!pset[q]){pset[q]=1;PVQ.push(q)}})});
+
+// 11) 全員回答（こんなときどうする？）
+var SS=["好きな人から急にLINEが来た","好きな人が他の人と楽しそうに話していた","好きな人と手が触れた","好きな人にあだ名で呼ばれた","好きな人が風邪で休んだ","好きな人に恋愛相談された","好きな人に連絡先を聞かれた","好きな人と目が合ってそらされた","席替えで好きな人の隣になった","好きな人と同じ班になった","好きな人にノートを借りた","好きな人と帰り道が一緒になった","好きな人の好きな人を知ってしまった","好きな人に勉強を教えてもらった","好きな人に「ありがとう」と言われた","好きな人が落ち込んでいた","体育祭で好きな人が活躍した","文化祭で好きな人と回ることになった","好きな人が友達と付き合ったと聞いた","好きな人にSNSをフォローされた","好きな人に笑いかけられた","好きな人に名前を呼ばれた","友達と好きな人がかぶった","告白されたのにタイプじゃなかった","好きな人が他校の人と話していた","好きな人の誕生日が近づいた","好きな人に恋人がいると知った","好きな人に好きな人がいるか聞かれた","好きな人にからかわれた","好きな人と二人で日直になった","好きな人が髪型を変えた","好きな人にお礼のお菓子をもらった","友達に好きな人を当てられた","好きな人の前で転んだ","好きな人に変なところを見られた","好きな人からの返信が既読のまま止まった","好きな人が自分の趣味を褒めてくれた","友達が好きな人に告白しようとしていた","好きな人が他の人に告白されたと聞いた","好きな人が転校すると知った","好きな人と同じ係になった","好きな人のSNSを見ていて間違っていいねを押した","好きな人から手紙をもらった","気になる人に告白された","修学旅行の夜に恋バナになった","友達に好きな人を聞かれた","好きな人の友達に好きバレした","好きな人に勉強で負けた","好きな人が部活を引退する","好きな人と二人きりで帰ることになった"];
+var SAYQ=[];
+var SAYTMP=[];each(SS,["とき、あなたならどうする？","とき、最初に何て言う？","とき、友達にどう話す？"],function(s,q){var t=s+q;SAYQ.push(t);return"\u0000"+t});
+TOPICS=TOPICS.filter(function(x){return x.charAt(0)!=="\u0000"});
+
+// 12) お絵かき（20秒）
+var DR1=["好きな人","気になる人","初恋の人","好きな先輩","好きな後輩","隣の席の人","同じ部活の好きな人","仲のいい友達","親友","幼なじみ","片思い中の相手","恋人"];
+var DR2=["誕生日","バレンタイン","ホワイトデー","クリスマス","卒業のとき","進級のとき","合格したとき","試合の前","落ち込んでいるとき","風邪で休んでいるとき","文化祭が終わったとき","修学旅行のとき"];
+var DRQ=[];
+each(DR2,DR1,function(o,r){DRQ.push(o+"、"+r+"にあげるなら何？20秒で絵に描いて");return"\u0000"});
+TOPICS=TOPICS.filter(function(x){return x.charAt(0)!=="\u0000"});
+["理想のデート","理想のプロポーズ","好きなタイプの顔","好きな人の特徴（似顔絵）","初恋の思い出の場面","理想の告白シーン","理想のお弁当","理想の相合傘","好きな人にあげたい手作りお菓子","理想の部屋","恋に落ちた瞬間","好きな人のイメージに近い動物","自分の恋愛を動物にすると","今の恋心を天気にすると","好きな人へのラブレターの封筒","理想の初デートの服","恋人とお揃いにしたいもの","恋人と行きたい旅行先","好きな人と食べたいもの","自分のモテ度のイメージ","恋愛あるあるの一コマ","好きな人と過ごしたい放課後","理想のバレンタインのお返し","好きな人のイメージカラーの持ち物","理想の恋人のシルエット","告白の返事を待つ自分","好きバレした瞬間の自分","好きな人を前にした自分","理想のカップルの後ろ姿","初デートの待ち合わせ","文化祭を好きな人と回る場面","夏祭りで好きな人と過ごす場面","好きな人と同じ班になった瞬間の自分","席替えで好きな人の隣になった自分","友達に恋バナをしている自分"].forEach(function(x){DRQ.push(x+"を20秒で絵に描いて")});
+
+// 13) 大喜利モード
+var OGP=["授業中","給食の時間","修学旅行のバス","体育の授業","文化祭の準備中","朝の通学電車","部活の練習中","家族との夕食中","友達の誕生日会","初デートの待ち合わせ","図書館","コンビニ","遊園地の行列","映画館","美容院","夏祭り","卒業式","面接","エレベーターの中","帰り道"];
+var OGE=["突然、先生が全員に「今から一発ギャグをして」と言った","隣の人が急に大声で恋の歌を歌い始めた","好きな人の名前が大音量の放送で呼ばれた","財布の中身が全部どんぐりになっていた","目の前の人が自分と全く同じ服を着ていた","知らない人に「久しぶり！」と抱きつかれた","隣に宇宙人が立っていた","スマホの画面に自分の黒歴史が大きく表示された","急に自分の声が全部ささやき声になった","猫がしゃべりかけてきた","周りの全員が同時に振り返ってこっちを見た","突然、会場から拍手が起こった","好きな人に変なあだ名をつけられた","自分だけ服が前後ろ逆だった","持ち物が全部ぬいぐるみになっていた","突然、時間が止まった","足元から小さなロボットが出てきた","目の前に突然ドアが現れた","先生が実は魔法使いだとバレた","かばんから謎の生き物が飛び出した","周りの全員がいきなりものまねを始めた","床が突然ふかふかになった","好きな人と同じ傘に入ることになった","雨が逆向きに降り始めた","自分の影が勝手に動き出した","全員の頭の上に今日の運勢が表示された"];
+var OGQ=[];
+OGP.forEach(function(p){OGE.forEach(function(e){OGQ.push(p+"、"+e+"。さあ、あなたはどうする？")})});
+["もし自分が漫画の主人公なら、タイトルは？","もし学校に新しい校則を一つ作れるなら？","もし先生が突然ラップを始めたら、返しのひと言は？","もし好きな人が実は宇宙人だったら、最初に何て言う？","もし朝起きたら教室が海になっていたら？","もし明日から1週間、語尾に「ござる」をつけるなら、どう過ごす？","もし1日だけ好きな動物になれるなら、何になって何をする？","もし世界一ダサい告白をするなら、何て言う？","もし自分専用の効果音が鳴るなら、どんなとき何の音？","もし給食に一品だけ好きなものを追加できるなら？","もしテストの答案に一言添えられるなら？","もし好きな人に一言で自分を売り込むなら？","もし自分のあだ名を自分で決められるなら？","もしクラスに宇宙人の転校生が来たら、歓迎の言葉は？","もし自分の部屋に突然ペンギンが住み着いたら？","もし1分間だけ透明人間になれるなら、何をする？","もし校長先生と入れ替わったら、朝礼で何を言う？","もし自分の人生に実況がついたら、今何て実況される？","もし好きな人にカレーを作るなら、隠し味は？","もし恋愛の神様に会えたら、一言目は？","もし未来の自分から手紙が届いたら、何と書いてある？","もし自分が発明家なら、何を発明する？","もし学校の七不思議に1つ加えるなら？","もし運動会に新種目を作るなら、名前と内容は？","もし自分の座右の銘を決めるなら？","もし好きな人への最初のLINEが誤送信されたら、何が届く？","もしバレンタインに変なチョコを渡すなら、何味？","もし時間割に新しい教科を追加するなら？","もし教室に自動販売機が置かれたら、何が売られている？","もし今日の日記にタイトルをつけるなら？"].forEach(function(x){OGQ.push(x)});
+var OGW=["これは何？一言で答えて","この謎の物体の名前と特徴を答えて","これは新商品です。商品名とキャッチコピーを答えて","これは新種の生き物です。名前と鳴き声を答えて","これは未来の発明品です。何に使う？","これは伝説の武器です。必殺技の名前は？","これは恋が叶うアイテムです。効果と副作用は？","これは名画です。タイトルをつけて","これは新しい校則を表した図です。どんな校則？","この形は何味？味の感想を答えて","これは動物園の新展示です。説明文を答えて","これは地図です。どこの宝の地図？","これは新しいスポーツのコートです。ルールは？","これは宇宙人からのメッセージです。何と書いてある？","これは新作ゲームの画面です。ゲームのタイトルは？","これは占いの結果です。あなたへの一言は？","これは新メニューの料理です。料理名は？","これは謎の建物です。何のためにある？","これは未来の乗り物です。名前と最高速度は？","これは先生の落書きです。何を描いた？","これは歴史的な発見です。博物館の説明文は？","これは新しいキャラクターです。名前と性格は？"];
+var OGD=[];
+OGE.forEach(function(e){["その瞬間の自分を20秒で絵に描いて","その場面を20秒で絵に描いて"].forEach(function(f){OGD.push(e.replace(/^突然、/,"")+"。"+f)})});
+OGP.forEach(function(p){OGD.push(p+"で起きたら一番面白い出来事を20秒で絵に描いて")});
+["世界一ダサいヒーロー","新種の生き物","未来の自動販売機","最強のお弁当","一番かっこ悪い告白シーン","ありえない校則","変なあだ名がついた理由の場面","宇宙人との初デート","先生の意外な休日","校長先生の秘密の趣味","世界一変な乗り物","恋のキューピッドの失敗","一番盛り上がらない文化祭の出し物","未来の教室","友達の変顔","この世にない新しい楽器","動物たちの運動会","最悪な寝ぐせの自分","ロボットが告白する場面","ペンギンの学校生活","一番おいしくなさそうな新作スイーツ","おばけの恋愛相談","自分の黒歴史の一場面","変な発明品を使っている自分","世界一あやしい占い師"].forEach(function(x){OGD.push(x+"を20秒で絵に描いて")});
+
+// 14) 恋愛ワードウルフ
+var WP=("初恋|片思い,告白|プロポーズ,ラブレター|手紙,両思い|片思い,一目惚れ|運命の出会い,彼氏|旦那,彼女|奥さん,元カレ|元カノ,好きな人|気になる人,付き合う|結婚する,デート|お出かけ,初デート|初対面,遊園地デート|水族館デート,映画デート|カフェデート,花火大会|夏祭り,クリスマス|バレンタイン,バレンタイン|ホワイトデー,チョコ|クッキー,手作りチョコ|市販のチョコ,誕生日プレゼント|クリスマスプレゼント,指輪|ネックレス,ペアリング|お守り,お揃い|ペア,相合傘|二人乗り,手つなぎ|腕組み,LINE|電話,既読スルー|未読スルー,返信待ち|連絡待ち,おやすみLINE|おはようLINE,ツーショット|プリクラ,プリクラ|写真,恋バナ|相談,恋愛相談|人生相談,ヤキモチ|嫉妬,嫉妬|うらやましい,ドキドキ|ワクワク,キュン|ときめき,照れる|緊張する,赤面|汗,笑顔|真顔,声がいい|顔がいい,優しい人|頼れる人,面白い人|明るい人,クールな人|大人しい人,年上|年下,同級生|先輩,幼なじみ|親友,席が隣|席が前,席替え|クラス替え,文化祭|体育祭,修学旅行|遠足,卒業式|入学式,放課後|昼休み,帰り道|通学路,部活の先輩|部活の後輩,マネージャー|キャプテン,応援|差し入れ,差し入れ|お土産,お弁当|給食,手作りお菓子|手作りお弁当,制服デート|私服デート,ブランコ|ベンチ,夕焼け|星空,イルミネーション|花火,観覧車|ジェットコースター,お化け屋敷|ホラー映画,恋愛映画|恋愛ドラマ,ラブソング|アニメソング,理想のタイプ|好きなタイプ,初めての彼氏|初めての友達,運命の人|大切な人,結婚|婚約,記念日|誕生日,サプライズ|ドッキリ,プロフィール|自己紹介,連絡先|SNSアカウント,あだ名|呼び捨て,名前呼び|苗字呼び,三角関係|恋のライバル,恋のキューピッド|恋のライバル,友達以上恋人未満|親友,遠距離恋愛|年の差恋愛,倦怠期|マンネリ,別れ話|仲直り,ケンカ|言い合い,仲直り|謝罪,告白成功|告白失敗,振った|振られた,ごめんなさい|ありがとう,告白の返事|返信,保留|既読,デートの待ち合わせ|デートの帰り道,おそろいのキーホルダー|おそろいのマフラー,マフラー|手袋,カイロ|ブランケット,傘|レインコート,雨の日デート|雪の日デート,初雪|初日の出,初詣|お祭り,おみくじ|お守り,占い|おまじない,恋愛運|金運,相性診断|心理テスト,ツンデレ|クーデレ,甘えん坊|寂しがり屋,照れ屋|恥ずかしがり屋,天然|ドジ").split(",");
+
+// 15) 新系統（恋愛）：例え・もしも・セリフ・タイプ・採点・きっかけ・ベスト3・用語
+var NMT=["天気","動物","食べ物","色","季節","教科","乗り物","楽器","映画のジャンル","スポーツ","音楽のジャンル","花","飲み物","文房具","お菓子","天体","果物","海の生き物","鳥","国","調味料","道具","ことわざ","曜日","時間帯","場所","ゲームのジャンル","ファッション"];
+each(["自分の恋愛を","好きな人を","理想のカップルを","今の恋心を"],NMT,function(a,c){return a+c+"で例えると？理由も教えて"});
+var NIF=["転校することになったら","同じ部活に入ってきたら","隣の家に引っ越してきたら","自分より背が低かったら","自分より背が高かったら","双子だったら","超有名人だったら","年下だったら","実は幼なじみだったら","運動がすごく苦手だったら","勉強がすごく苦手だったら","方向音痴だったら","実はお金持ちだったら","実は人見知りだったら","ゲームが大好きだったら","大の甘党だったら","動物が苦手だったら","歌がすごく上手だったら","絵がすごく上手だったら","毎朝早起きだったら","超ネガティブだったら","超ポジティブだったら","実はすごい照れ屋だったら","実はすごいおしゃべりだったら","自分と誕生日が同じだったら","自分と同じ名前だったら","自分と趣味が全部同じだったら","自分の親友の好きな人だったら","急にイメチェンしたら","急に冷たくなったら","急に優しくなったら","急に連絡が増えたら","実は自分のことを前から知っていたら","実は自分のことを友達に話していたら"];
+each(NIF,["どう思う？","どうする？","好きでい続ける？"],function(a,q){return "もし好きな人が"+a+"、"+q});
+var NTM=["小学生の頃の自分","1年前の自分","中1のときの自分","初恋のときの自分","振られた日の自分","好きバレした日の自分","告白前日の自分","片思い中の自分","文化祭の日の自分","来年の自分","高校生になった自分","大人になった自分"];
+each(NTM,["に今の自分から恋愛アドバイスするなら？","に一言だけ伝えるなら？","に「やめておいた方がいい」と言いたいことは？","に「それでいいよ」と背中を押したいことは？"],function(a,b){return a+b});
+var NLN=["今日かわいいね","今日かっこいいね","ずっと見てたよ","一緒に帰ろう","好きな人いるの？","連絡してもいい？","隣いい？","今度遊ぼう","待っててくれたの？","無理しないでね","頑張ってるの知ってるよ","笑った顔が好き","下の名前で呼んでもいい？","勉強教えて","ノート見せて","気になってた","誰にでも優しいよね","意外と一途なんだね","ありがとう、助かった","また明日ね","一緒だと楽しい","照れてる？","顔赤いよ","運命かもね","他の人より話しやすい","好きなタイプ教えて","好きな人当てていい？","秘密にしてくれる？","実は前から気づいてた","返事、待ってるね","友達でいたい","もう少し考えさせて","気持ちはうれしい","応援してるね","今日は楽しかった","会えてよかった","手、冷たいね","傘、入る？","これあげる","一緒に写真撮ろう","名前呼んで","ちょっと話せる？","放課後空いてる？","明日も会える？","さっき目が合ったよね","ずっと言えなかったけど"];
+NLN.forEach(function(l){add("「"+l+"」と好きな人に言われたら、うれしさは10点満点で何点？");add("「"+l+"」と言われたら、どう返す？");add("「"+l+"」と言われた経験はある？暴露して")});
+var NSK=["告白する勇気","人を笑わせる力","聞き上手度","気配り度","照れ隠しのうまさ","連絡のマメさ","ヤキモチの強さ","一途さ","鈍感さ","好きバレしやすさ","恋愛の勘の鋭さ","諦めの早さ","立ち直りの早さ","相談に乗る力","秘密を守る力","サプライズの上手さ","プレゼント選びのセンス","デートプランを立てる力","褒め上手度","甘え上手度","素直さ","照れやすさ","優柔不断度","積極性","妄想力","モテ度","笑顔の自然さ","緊張しやすさ","会話を続ける力","気持ちを伝える力","空気を読む力","話しかける勇気"];
+NSK.forEach(function(k){add("自分の"+k+"を10点満点で採点すると？理由も教えて");add("この中で"+k+"が一番高いのは誰？名前を暴露して")});
+var NTG=["優しくされる","助けてもらう","笑顔を向けられる","名前を覚えてもらう","勉強を教えてもらう","相談に乗ってもらう","傘に入れてもらう","落とし物を拾ってもらう","褒められる","励まされる","ノートを貸してもらう","重い荷物を持ってもらう","体調を気づかわれる","一緒に笑い合う","部活で応援される","席が隣になる","同じ班になる","偶然よく会う","好きなものが同じと分かる","意外な特技を知る","一生懸命な姿を見る","緊張している姿を見る","本気で笑った顔を見る","手書きの字を見る","声を聞く","名前を呼ばれる","秘密を打ち明けられる","一緒に帰る","好きな曲が同じ","同じ失敗をして笑い合う","約束を守ってもらう","頼られる","誕生日を祝ってもらう","お菓子をもらう","手紙をもらう","髪型が変わる","制服以外の姿を見る","体育で活躍する姿を見る","発表で堂々としている姿を見る"];
+NTG.forEach(function(t){add(t+"と、好きになりそう？10点満点で何点？");add(t+"のがきっかけで好きになったことはある？相手の名前を暴露して")});
+var NAS=["好きなところ","気になるクセ","ドキッとする仕草","うれしい言葉","苦手なところ","持ち物","髪型","服装","声の特徴","笑い方","話し方","口ぐせ","得意なこと","趣味","好きな食べ物","イメージカラー","好きな教科","好きなスポーツ","よく聴いていそうな音楽","似ている動物"];
+each(["好きな人","理想のタイプ","初恋の人","気になる人","憧れの人","前に好きだった人"],NAS,function(a,b){return a+"の"+b+"を3つ暴露して"});
+var NXT=["犬系","猫系","ウサギ系","クマ系","キツネ系","リス系","王子系","アイドル系","スポーツマン系","文化系","ギャップ系","天然系","しっかり系","ミステリアス系","お兄さん系","弟系","ヒーロー系","癒し系","元気系","クール系"];
+pairs(NXT,function(a,b){return "「"+a+"」と「"+b+"」、好きなタイプはどっち？思い浮かぶ人の名前を暴露して"});
+vpairs(NXT,["好きなタイプはどっち？","付き合うならどっち？"]);
+var NTR=["片思い","両思い","失恋","好きバレ","告白","三角関係","初恋","一目惚れ","遠距離","年の差","恋愛相談","ヤキモチ","運命","すれ違い","勘違い","噂","応援","後悔","友達以上恋人未満","ギャップ"];
+NTR.forEach(function(t){add("「"+t+"」の経験談を暴露して");add("「"+t+"」に一番詳しいのは誰？名前を暴露して");add("「"+t+"」を一言で表すと？")});
+
+// ワードウルフ：追加ペア（重複は除去）
+WP=WP.concat("片思い|一目惚れ,嫉妬|束縛,幼なじみ|同級生,ツンデレ|ヤンデレ,ラブレター|LINE告白,失恋|喧嘩別れ,ギャップ萌え|ひとめぼれ,割り勘|奢り,年上彼氏|年下彼氏,相合傘|ペアルック,お揃い|ペアリング,花束|ぬいぐるみ,夜景|花火,映画館デート|カラオケデート,電話|ビデオ通話,スタンプ|絵文字,匂わせ|惚気,ノロケ|愚痴,告白待ち|告白される,ときめき|胸キュン,初恋|憧れ,相思相愛|相性抜群,運命の人|理想の人,未練|後悔,忘れられない人|初恋の人,恋愛相談|恋バナ,恋愛占い|血液型占い,恋愛ドラマ|少女漫画,胸キュン映画|恋愛小説,ラブソング|失恋ソング,カップルコーデ|勝負服,香水|シャンプーの匂い,メイク|髪型,ネイル|ヘアアレンジ,イメチェン|ダイエット,デート前日|デート当日,待ち合わせ|お迎え,手料理|外食,お弁当|カフェ,ホワイトデー|七夕,初詣|花火大会,夏祭り|イルミネーション,誕生日プレゼント|記念日プレゼント,手紙|メッセージカード,交換日記|LINE,尽くす|尽くされる,甘える|甘やかす,聞き上手|話し上手,イケメン|優しい人,塩顔|ソース顔,犬系彼氏|猫系彼女,王子様|お姫様,天然|あざとい,小悪魔|女神,惚れっぽい|冷めやすい,一途|惚れっぽい,恋愛脳|現実主義,ドキドキ|安心感,好きなタイプ|理想の恋人,見つめ合う|目が合う,頭ポンポン|なでなで,友達に紹介|家族に紹介,連絡先交換|SNSフォロー,遊園地|水族館,ジェットコースター|メリーゴーランド,告白|手紙,初デート|二回目のデート,ヒーロー|王子様,恋のおまじない|恋の占い,恋の悩み|友達の悩み,放課後デート|休日デート".split(","));
+(function(){var k={};WP=WP.filter(function(p){var a=p.split("|"),key=a.slice().sort().join("|");if(k[key])return false;k[key]=1;return true})})();
+
+// 16) さらに新系統：LINE・相談・理想・できる？・ときめき三択・チャレンジ・演技
+var NLS=["既読がついたまま返信が来ない","返信がスタンプだけだった","夜中に突然メッセージが来た","長文が送られてきた","返信が一言だけだった","間違えて送ったメッセージが既読になった","好きな人のアイコンが変わった","好きな人のストーリーに自分が載っていた","おやすみと送られてきた","「今何してる？」と来た","返信がいつもより早かった","返信がいつもより遅かった","変なスタンプが来た","グループで話しかけられた","誤爆で変なスタンプを送ってしまった","返信が急に敬語になった","「笑」だけ返ってきた","通話に誘われた","いいねを押された","プロフィールの一言が変わった","写真が送られてきた","急に「ごめん」と来た","「相談がある」と来た","「明日って空いてる？」と来た","返事が一晩来なかった","話が盛り上がって止まらなくなった","「またね」で終わらされた","「ありがとう」だけ来た","勇気を出して最初のメッセージを送った","メッセージを送ろうとして30分悩んでいる"];
+each(NLS,["あなたならどうする？","最初の返信は何て送る？","何分後に返す？"],function(a,q){return "好きな人とのLINEで、"+a+"とき、"+q});
+var NTB=["好きな人に話しかけられない","告白して振られた","好きな人に好きな人がいた","友達と好きな人がかぶった","好きな人にそっけなくされる","好きな人から連絡が来ない","好きな人と気まずくなった","好きな人の前で緊張して固まる","好きバレして恥ずかしい","告白するか迷っている","好きな人が友達と付き合いそう","好きな人にヤキモチを焼いてしまう","好きな人の好みがわからない","好きな人に避けられている気がする","好きな人の誕生日に何をあげるか迷っている","両思いなのか分からない","噂を立てられて困っている","クラス替えで好きな人と離れた","好きな人が転校する","振られたけどまだ好き","好きじゃない人に告白された","告白の返事に悩んでいる","好きな気持ちが冷めてきた","好きな人が他校の人を好きらしい","バレンタインを渡す勇気がない","好きな人の前で変なことを言ってしまった","自分に自信が持てない","恋愛の相談を誰にしていいか分からない","好きな人に恋人ができた","好きな人に手紙を渡したい","好きな人とケンカしてしまった","好きな人に冷たくしてしまった","好きな人と同じ班でどうしていいか分からない","好きな人と席が離れてしまった"];
+each(NTB,["なんて答える？","最初にかける言葉は？","どんなアドバイスをする？"],function(t,q){return "友達から「"+t+"」と相談された。"+q});
+NTB.forEach(function(t){SAYQ.push("友達から「"+t+"」と相談された。なんて答える？")});
+NLS.forEach(function(a){SAYQ.push("好きな人とのLINEで、"+a+"とき、あなたならどうする？")});
+NIF.forEach(function(a){SAYQ.push("もし好きな人が"+a+"、あなたは何て声をかける？")});
+var NID=["初デートの場所","告白の場面","付き合って最初の記念日","呼ばれ方","LINEの頻度","手紙の内容","待ち合わせの時間","デートの服","放課後の過ごし方","休日の過ごし方","誕生日の過ごし方","バレンタインの渡し方","プレゼント","初めての連絡","告白の返事","振られ方","仲直りの仕方","ケンカの終わり方","一緒に食べたいもの","一緒に行きたいお祭り","一緒に見たい景色","一緒に聴きたい曲","一緒に観たい映画","二人の秘密","二人だけの合言葉","おそろいの物","恋のきっかけ","恋の相談相手","恋の思い出","付き合う前の期間","卒業式の過ごし方","文化祭の過ごし方","修学旅行の過ごし方","体育祭の過ごし方","夏休みの過ごし方","冬休みの過ごし方","席替え","席の位置","帰り道","待ち合わせ場所","恋愛映画の結末","初恋の結末"];
+NID.forEach(function(x){add("理想の"+x+"を教えて");add("理想の"+x+"に一番近い経験を暴露して");add("理想の"+x+"を一番語れそうなのは誰？名前を暴露して")});
+var NAC=["自分から話しかける","名前で呼ぶ","連絡先を聞く","一緒に帰ろうと誘う","手紙を渡す","好きなタイプを聞く","恋人がいるか聞く","告白する","誕生日にプレゼントを渡す","バレンタインを渡す","あだ名で呼ぶ","目を見て話す","笑わせる","相談する","席を隣にしてほしいと頼む","同じ班になりたいと伝える","文化祭に誘う","部活を見に行く","応援メッセージを送る","写真を一緒に撮ろうと誘う","SNSをフォローする","「かわいい」「かっこいい」と伝える","好きと伝える","素の自分を出す","ボケてみせる","誕生日を覚えておく","好きなものを調べる","借りたものを返す","傘を貸す","手を振る","あいさつする","隣に座る","遊びに誘う","話をじっくり聞く","励ます","お礼を言う","お菓子をあげる","二人で話す","二人で帰る","弱みを見せる","気持ちを隠し通す"];
+each(NAC,["できる？できない？理由も教えて","挑戦するなら何日目にやる？"],function(a,q){return "好きな人に、"+a+"こと、"+q});
+var NTK=["目が合う","名前を呼ばれる","手が触れる","偶然隣になる","笑いかけられる","褒められる","一緒に帰る","連絡が来る","プレゼントをもらう","秘密を共有する","頼られる","助けてもらう","照れた顔を見る","真剣な顔を見る","笑い合う","待っていてくれる","手紙をもらう","応援される","励まされる","ノートを貸してもらう"];
+var tc=0;for(var i=0;i<NTK.length;i++)for(var j=i+1;j<NTK.length;j++)for(var k=j+1;k<NTK.length;k++)if(tc++%8===0)add("「"+NTK[i]+"」「"+NTK[j]+"」「"+NTK[k]+"」、一番ときめくのはどれ？理由も教えて");
+var NCH=["告白のセリフ","デートスポット","恋愛ソングの曲名","好きなタイプの特徴","恋愛あるある","照れる瞬間","ドキッとする仕草","好きな人の呼び方","恋愛ドラマの名シーン","好きな人へのプレゼント","放課後デートの行き先","キュンとする言葉","振られたときの励まし言葉"];
+[10,20,30].forEach(function(n){[3,5,7].forEach(function(k){NCH.forEach(function(c){add(n+"秒で"+c+"を"+k+"個言って！")});add(n+"秒で好きな人のいいところを"+k+"個言って！")})});
+SS.forEach(function(s){["とき、リアクションを3秒で演技して","とき、顔だけで気持ちを表現して","とき、心の声をセリフにして言って"].forEach(function(q){add(s+q)})});
+NLN.forEach(function(l){PVQ.push("この中で「"+l+"」と一番言いそうな人は？");DRQ.push("「"+l+"」と言われた瞬間の自分の顔を20秒で絵に描いて")});
+NSK.forEach(function(k){PVQ.push("この中で、"+k+"が一番高そうなのは誰？")});
+["動物","食べ物","花","乗り物","お菓子","果物","鳥","海の生き物","飲み物","道具"].forEach(function(c){DRQ.push("好きな人のイメージの"+c+"を20秒で絵に描いて");DRQ.push("今の恋心を"+c+"にたとえて20秒で絵に描いて")});
+
+// ===== Firebase =====
 const firebaseConfig = {
-  apiKey: "AIzaSyCPXBVbdVCYHdop8KTlEQ310p2ZGPIoL04",
-  authDomain: "egg-man-8980e.firebaseapp.com",
-  databaseURL: "https://egg-man-8980e-default-rtdb.firebaseio.com",
-  projectId: "egg-man-8980e",
-  storageBucket: "egg-man-8980e.firebasestorage.app",
-  messagingSenderId: "664061097830",
-  appId: "1:664061097830:web:248329aa1cfadfb6d4baa7",
-  measurementId: "G-9G3C4S54YS"
+  apiKey: "AIzaSyAqe24qeS_gYtMA_gnF_lYNP70keCQcpnA",
+  authDomain: "renritu-56ae7.firebaseapp.com",
+  databaseURL: "https://renritu-56ae7-default-rtdb.firebaseio.com",
+  projectId: "renritu-56ae7",
+  storageBucket: "renritu-56ae7.firebasestorage.app",
+  messagingSenderId: "327969979771",
+  appId: "1:327969979771:web:709a0fc2a281dc495e91de",
+  measurementId: "G-VFLGB9QXR3"
 };
+firebase.initializeApp(firebaseConfig);
+var db=firebase.database();
+var $=function(i){return document.getElementById(i)};
+var myNm="",me=Math.random().toString(36).slice(2,10),roomRef=null,code="",isHost=false,joined=false,lastN=0,timers=[],busy=false,data=null,lastPick="";
+$("total").textContent=TOPICS.length+VOTES.length+PVQ.length+SAYQ.length+DRQ.length+OGQ.length+OGW.length+OGD.length+WP.length;
 
-const PAIRS=[["告白","プロポーズ"],["片思い","一目惚れ"],["壁ドン","顎クイ"],["手つなぎ","腕組み"],["既読スルー","未読スルー"],["遊園地デート","水族館デート"],["嫉妬","束縛"],["初キス","初ハグ"],["幼なじみ","同級生"],["マッチングアプリ","合コン"],["記念日","誕生日"],["同棲","結婚"],["浮気","二股"],["ツンデレ","ヤンデレ"],["ラブレター","LINE告白"],["失恋","喧嘩別れ"],["おうちデート","ドライブデート"],["ギャップ萌え","ひとめぼれ"],["バレンタイン","クリスマス"],["割り勘","奢り"],["初デート","初対面"],["元カレ","元カノ"],["遠距離恋愛","社内恋愛"],["年上彼氏","年下彼氏"],["バックハグ","お姫様抱っこ"],["膝枕","腕枕"],["相合傘","ペアルック"],["お揃い","ペアリング"],["指輪","ネックレス"],["花束","ぬいぐるみ"],["サプライズ","ドッキリ"],["夜景","花火"],["観覧車","ジェットコースター"],["映画館デート","カラオケデート"],["温泉旅行","海外旅行"],["プリクラ","ツーショット"],["電話","ビデオ通話"],["おやすみLINE","おはようLINE"],["スタンプ","絵文字"],["匂わせ","惚気"],["ノロケ","愚痴"],["三角関係","略奪愛"],["禁断の恋","不倫"],["秘密の恋","内緒の関係"],["友達以上恋人未満","親友"],["告白待ち","告白される"],["逆ナン","ナンパ"],["ときめき","胸キュン"],["初恋","憧れ"],["相思相愛","相性抜群"],["運命の人","理想の人"],["結婚式","披露宴"],["新婚旅行","家族旅行"],["婚約","婚姻届"],["両親への挨拶","顔合わせ"],["プロポーズの言葉","告白の言葉"],["夫婦喧嘩","痴話喧嘩"],["仲直り","謝罪"],["別れ話","倦怠期"],["未練","後悔"],["復縁","略奪"],["忘れられない人","初恋の人"],["恋愛相談","恋バナ"],["恋愛占い","血液型占い"],["恋愛ドラマ","少女漫画"],["胸キュン映画","恋愛小説"],["ラブソング","失恋ソング"],["カップル動画","カップルアカウント"],["カップルコーデ","勝負服"],["香水","シャンプーの匂い"],["メイク","髪型"],["ネイル","ヘアアレンジ"],["イメチェン","ダイエット"],["デート前日","デート当日"],["待ち合わせ","お迎え"],["送り迎え","家まで送る"],["手料理","外食"],["お弁当","カフェ"],["ペアマグ","合鍵"],["ホワイトデー","七夕"],["初詣","花火大会"],["夏祭り","イルミネーション"],["誕生日プレゼント","記念日プレゼント"],["手紙","メッセージカード"],["交換日記","LINE"],["お泊まり","日帰り"],["朝帰り","門限"],["亭主関白","かかあ天下"],["尽くす","尽くされる"],["甘える","甘やかす"],["聞き上手","話し上手"],["イケメン","優しい人"],["高身長","高収入"],["塩顔","ソース顔"],["犬系彼氏","猫系彼女"],["王子様","お姫様"],["天然","あざとい"],["小悪魔","女神"],["モテ期","婚活"],["婚活パーティー","街コン"],["お見合い","紹介"],["一途","浮気性"],["惚れっぽい","冷めやすい"],["恋愛脳","現実主義"],["ドキドキ","安心感"],["好きバレ","告白"],["好きなタイプ","理想の恋人"],["見つめ合う","目が合う"],["キス待ち","ハグ待ち"],["頭ポンポン","なでなで"],["ほっぺにチュー","おでこにキス"],["友達に紹介","家族に紹介"],["連絡先交換","SNSフォロー"],["アプリで出会う","街で出会う"]];
-const $=s=>document.querySelector(s), app=$('#app');
-const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const fmt=ms=>{ms=Math.max(0,ms)/1000|0;return (ms/60|0)+':'+String(ms%60).padStart(2,'0')};
-let page='home',mode=null,S=null,me=null,ref=null,db=null,code='',shown=false,names=[],tick=null,err='';
+function err(m){$("err").textContent=m}
+function myName(){var n=$("name").value.trim();if(!n){err("名前を入力してください");return null}myNm=n;return n}
+function enter(c,host){code=c;isHost=host;roomRef=db.ref("rooms/"+c);joined=true;lastN=0;
+ armDisc();
+ roomRef.on("value",onRoom);
+ $("home").classList.add("hide");$("room").classList.remove("hide");$("code").textContent=c;$("game").classList.add("hide")}
+$("create").onclick=function(){var n=myName();if(!n)return;err("");
+ var c=String(Math.floor(1000+Math.random()*9000)),r=db.ref("rooms/"+c);
+ r.once("value").then(function(s){if(s.exists()&&s.child("players").exists()){err("もう一度押してください");return}
+  var o={host:me,mode:selMode,started:false,round:{n:0},players:{}};o.players[me]={name:n};
+  return r.set(o).then(function(){enter(c,true)})}).catch(function(e){err("接続エラー: "+e.message)})};
+$("join").onclick=function(){var n=myName();if(!n)return;err("");
+ var c=$("codeIn").value.trim(),r=db.ref("rooms/"+c);
+ r.once("value").then(function(s){if(!s.exists()||!s.child("players").exists()){if(s.exists())r.remove();err("ルームが見つかりません");return}
+  return r.child("players/"+me).set({name:n}).then(function(){enter(c,false)})}).catch(function(e){err("接続エラー: "+e.message)})};
+function armDisc(){roomRef.child("players/"+me).onDisconnect().remove();roomRef.child("votes/"+me).onDisconnect().remove();roomRef.child("answers/"+me).onDisconnect().remove();roomRef.child("draws/"+me).onDisconnect().remove()}
+function leaveRoom(){if(!roomRef)return;var r=roomRef;joined=false;timers.forEach(clearTimeout);timers.forEach(clearInterval);r.off();
+ r.child("players/"+me).onDisconnect().cancel();r.child("votes/"+me).onDisconnect().cancel();r.child("answers/"+me).onDisconnect().cancel();r.child("answers/"+me).remove();r.child("draws/"+me).onDisconnect().cancel();r.child("draws/"+me).remove();
+ r.child("votes/"+me).remove();
+ r.child("players/"+me).remove().then(function(){return r.child("players").once("value")}).then(function(x){if(!x.exists())return r.remove()});
+ roomRef=null;busy=false;$("room").classList.add("hide");$("home").classList.remove("hide");err("")}
+$("leave").onclick=leaveRoom;
 
-const ids=()=>S.order||[];
-const nm=i=>esc(S.players[i].name);
-const wordOf=i=>i===S.wolf?S.wl:S.maj;
-
-function upd(p){ if(mode==='online') ref.update(p); else {Object.assign(S,p);render();} }
-
-/* ---------- ホーム / セットアップ ---------- */
-function home(){return `<h1>恋バナウルフ</h1><p class="mut">みんなに配られる恋愛のお題は同じ。ただ1人だけ、少しちがう。話して探そう。</p>
-<div class="card"><h2>1台でまわす</h2><p class="mut">スマホを回して、順番にお題を見る。</p><button onclick="go('setup')">はじめる</button></div>
-<div class="card"><h2>オンラインで遊ぶ</h2><p class="mut">ルーム番号で集まって、それぞれのスマホで遊ぶ。</p><button class="sub" onclick="go('join')">ルームをつくる / 入る</button></div>`}
-function go(p){page=p;err='';render()}
-
-function setup(){return `<h2>参加者(3〜8人)</h2>
-<div class="chips">${names.map((n,i)=>`<span class="chip">${esc(n)} <a href="#" onclick="names.splice(${i},1);render();return false" aria-label="削除">×</a></span>`).join('')}</div>
-<input id="n" maxlength="8" placeholder="ニックネーム" onkeydown="if(event.key==='Enter')addName()">
-<button class="sub" onclick="addName()">追加</button>
-<button ${names.length<3?'disabled':''} onclick="startLocal()">ゲーム開始</button>
-<button class="sub" onclick="go('home')">もどる</button>`}
-function addName(){const v=$('#n').value.trim();if(v&&names.length<8&&!names.includes(v))names.push(v);render();$('#n')&&$('#n').focus()}
-function startLocal(){mode='local';const pl={};names.forEach((n,i)=>pl['p'+i]={name:n});S={players:pl,order:names.map((_,i)=>'p'+i),host:'p0',phase:'lobby',vi:0};start()}
-
-function start(){
-  const o=ids(),pr=PAIRS[Math.random()*PAIRS.length|0],sw=Math.random()<.5?pr:[pr[1],pr[0]];
-  shown=false;
-  upd({phase:'reveal',wolf:o[Math.random()*o.length|0],maj:sw[0],wl:sw[1],votes:null,ri:0,vi:0});
+function onRoom(s){
+ if(!s.exists()){closeRoom();return}
+ data=s.val();var ps=data.players||{},ids=Object.keys(ps);
+ if(!ps[me]){roomRef.child("players/"+me).set({name:myNm});armDisc();return}
+ if(!ps[data.host]&&ids.slice().sort()[0]===me)roomRef.child("host").set(me);
+ $("players").innerHTML="";
+ ids.forEach(function(id){var d=document.createElement("div");d.className="pl"+(id===data.host?" h":"");var av=document.createElement("b");av.textContent=ps[id].name.charAt(0);var nm=document.createElement("span");nm.textContent=ps[id].name;d.appendChild(av);d.appendChild(nm);if(data.mode==="ogiri"||data.mode==="wolf"){var pt=document.createElement("em");pt.textContent=((data.scores||{})[id]||0)+"pt";d.appendChild(pt)}$("players").appendChild(d)});
+ isHost=(data.host===me);
+ var md=data.mode||"bakuro";$("modeTag").textContent=md==="wolf"?"ワードウルフ（恋愛）":"暴露モード";
+ $("modeDesc").textContent=md==="wolf"?"違う単語を持つ狼を探そう。市民は狼を当て、狼は逃げ切るか逆転を狙う":"名前や本音を暴露し合うモード";
+ $("draw").classList.toggle("hide",!isHost);
+ $("draw").disabled=ids.length<(data.mode==="wolf"?3:2)||busy;
+ var rd0=data.round||{};$("draw").textContent=btnLabel(data);
+ $("wait").textContent=!data.started?(isHost?(ids.length<(md==="wolf"?3:2)?"参加を待っています（"+(md==="wolf"?"3":"2")+"人以上）":"全員そろったらスタート！"):"ホストがスタートするのを待っています"):"";
+ if(data.started&&data.round&&data.round.n!==lastN){lastN=data.round.n;play(data.round,ids.map(function(i){return ps[i].name}))}
+ renderVote();
 }
+function closeRoom(){if(!joined)return;joined=false;timers.forEach(clearTimeout);timers.forEach(clearInterval);
+ if(roomRef)roomRef.off();roomRef=null;busy=false;
+ $("room").classList.add("hide");$("home").classList.remove("hide");err("ルームが終了しました")}
+function btnLabel(d){var r=d.round||{};if(!d.started)return"ゲームスタート";
+ if(r.type==="wolf"){var ph=r.phase||"talk";return ph==="talk"?"投票へ":ph==="vote"?"結果を見る":"次のお題へ"}
+ if(r.type==="vote"||r.type==="pvote")return r.reveal?"次のお題へ":"結果を見る";
+ if(r.type==="say"||r.type==="draw"){if(!r.order)return r.type==="draw"?"絵を公開する":"回答を公開する";if((r.shown||0)<r.order.length)return"次の回答を見る";if(r.og){if(!r.vphase)return"投票スタート";if(!r.reveal)return"結果を見る"}return"次のお題へ"}
+ return"次のお題へ"}
+$("draw").onclick=function(){if(!data)return;var ps=data.players||{},ids=Object.keys(ps);if(ids.length<2)return;
+ var rd=data.round||{},T=rd.type;
+ if(data.mode==="wolf"&&ids.length<3)return;
+ if(data.started){
+  if(T==="wolf"){var ph=rd.phase||"talk";if(ph==="talk"){roomRef.child("round/phase").set("vote");return}if(ph==="vote"){advanceWolf();return}}
+  if((T==="vote"||T==="pvote")&&!rd.reveal){advance();return}
+  if(T==="say"||T==="draw"){if(!rd.order){advance();return}if((rd.shown||0)<rd.order.length){roomRef.child("round/shown").set((rd.shown||0)+1);return}if(rd.og){if(!rd.vphase){roomRef.child("round/vphase").set(true);return}if(!rd.reveal){advance();return}}}
+ }
+ var n=(rd.n||0)+1,round,x=Math.random();
+ function pk(a){return a[Math.floor(Math.random()*a.length)]}
+ if(data.mode==="wolf"){var pr=pk(WP).split("|");if(Math.random()<0.5)pr.reverse();
+  round={n:n,type:"wolf",phase:"talk",words:{c:pr[0],w:pr[1]},wolf:pk(ids),first:pk(ids),topic:"ワードウルフ"}}
+ else if(data.mode==="ogiri"){var y=Math.random();
+  if(y<0.4)round={n:n,type:"say",og:true,topic:pk(OGQ),shown:0};
+  else if(y<0.65)round={n:n,type:"say",og:true,fig:Math.floor(Math.random()*1e9),topic:pk(OGW),shown:0};
+  else round={n:n,type:"draw",og:true,topic:pk(OGD),shown:0}}
+ else if(x<0.15){var v=pk(VOTES);round={n:n,type:"vote",topic:v.q,a:v.a,b:v.b,reveal:false}}
+ else if(x<0.29){round={n:n,type:"pvote",topic:pk(PVQ),reveal:false}}
+ else if(x<0.43){round={n:n,type:"say",topic:pk(SAYQ),shown:0}}
+ else if(x<0.55){round={n:n,type:"draw",topic:pk(DRQ),shown:0}}
+ else{var t=pk(TOPICS),cand=ids.filter(function(i){return i!==lastPick}),p=pk(cand);lastPick=p;round={n:n,type:"ask",topic:t,name:ps[p].name}}
+ $("draw").disabled=true;
+ var u={started:true,round:round,votes:null,answers:null,draws:null};if(!data.started)u.scores=null;roomRef.update(u)};
 
-/* ---------- オンライン ---------- */
-function join(){return `<h2>オンライン</h2><input id="n" maxlength="8" placeholder="ニックネーム">
-<button onclick="enter(true)">ルームをつくる</button>
-<input id="c" inputmode="numeric" maxlength="4" placeholder="ルーム番号(4けた)">
-<button class="sub" onclick="enter(false)">この番号で入る</button>
-${err?`<p class="err">${err}</p>`:''}<button class="sub" onclick="go('home')">もどる</button>`}
-
-function connect(){
-  if(db)return Promise.resolve(true);
-  try{firebase.initializeApp(firebaseConfig);db=firebase.database();}catch(e){db=null;return Promise.resolve(false)}
-  return new Promise(r=>{const c=db.ref('.info/connected');
-    const to=setTimeout(()=>{c.off();db=null;r(false)},6000);
-    c.on('value',s=>{if(s.val()){clearTimeout(to);c.off();r(true)}});});
+var voteReady=false;
+function el(t,c,x){var e=document.createElement(t);if(c)e.className=c;if(x!==undefined)e.textContent=x;return e}
+function buildCanvas(box){
+ var W=360,cv=el("canvas");cv.id="drCv";cv.width=W;cv.height=W;
+ var tm=el("div","","");tm.id="drTm";box.appendChild(tm);box.appendChild(cv);
+ var ctx=cv.getContext("2d");ctx.fillStyle="#fff";ctx.fillRect(0,0,W,W);ctx.lineCap="round";ctx.lineJoin="round";
+ var col="#222222",wd=5,dr=false,locked=false,last=null,sent=false,left=20;
+ function pos(e){var t=(e.touches&&e.touches[0])||(e.changedTouches&&e.changedTouches[0])||e;var r=cv.getBoundingClientRect();return{x:(t.clientX-r.left)*W/r.width,y:(t.clientY-r.top)*W/r.height}}
+ function st(e){e.preventDefault();if(locked)return;dr=true;last=pos(e);ctx.fillStyle=col;ctx.beginPath();ctx.arc(last.x,last.y,wd/2,0,7);ctx.fill()}
+ function mv(e){e.preventDefault();if(!dr||locked)return;var p=pos(e);ctx.strokeStyle=col;ctx.lineWidth=wd;ctx.beginPath();ctx.moveTo(last.x,last.y);ctx.lineTo(p.x,p.y);ctx.stroke();last=p}
+ function en(e){dr=false}
+ cv.addEventListener("touchstart",st,{passive:false});cv.addEventListener("touchmove",mv,{passive:false});
+ cv.addEventListener("touchend",en);cv.addEventListener("touchcancel",en);
+ cv.addEventListener("mousedown",st);cv.addEventListener("mousemove",mv);window.addEventListener("mouseup",en);
+ var tools=el("div","tools");
+ ["#222222","#e53935","#1e88e5","#43a047","#fdd835"].forEach(function(c,i){var b=el("button","sw"+(i?"":" on"));b.style.background=c;b.onclick=function(){col=c;wd=5;[].forEach.call(tools.querySelectorAll(".sw"),function(x){x.classList.remove("on")});b.classList.add("on")};tools.appendChild(b)});
+ var er=el("button","tl","消しゴム");er.onclick=function(){col="#ffffff";wd=22};tools.appendChild(er);
+ var cl=el("button","tl","全消し");cl.onclick=function(){if(locked)return;ctx.fillStyle="#fff";ctx.fillRect(0,0,W,W)};tools.appendChild(cl);
+ box.appendChild(tools);
+ var sb=el("button","opt","描き終わった（提出）");box.appendChild(sb);
+ var ct=el("div","hint","");ct.id="drCnt";box.appendChild(ct);
+ function submit(){if(sent)return;sent=true;locked=true;clearInterval(iv);
+  if(roomRef)roomRef.child("draws/"+me).set(cv.toDataURL("image/jpeg",0.6));
+  sb.textContent="提出済み";sb.disabled=true;tm.textContent="提出しました"}
+ sb.onclick=submit;
+ function tick(){tm.textContent="残り "+left+" 秒";if(left<=0)submit();left--}
+ var iv=setInterval(tick,1000);timers.push(iv);tick();
 }
-async function enter(create){
-  const name=$('#n').value.trim(),cv=($('#c')||{}).value;
-  if(!name){err='ニックネームを入れてね';return render()}
-  err='接続中…';render();
-  if(!await connect()){err='オンラインに接続できません。1台モードを使うか、自分のサイトに置いて開いてね。';return render()}
-  me='p'+Math.random().toString(36).slice(2,8);
-  if(create){
-    code=String(1000+Math.random()*9000|0);ref=db.ref('rooms/'+code);
-    await ref.set({host:me,phase:'lobby',players:{[me]:{name}},order:[me]});
+function wrow(box,label,n,tot,names,win){var w=el("div","res"+(win?" win":"")),top=el("div","rtop");top.appendChild(el("span","",label));top.appendChild(el("span","rc",n+"票"));w.appendChild(top);var bar=el("div","bar"),f=el("i");f.style.width=Math.round(n/tot*100)+"%";bar.appendChild(f);w.appendChild(bar);w.appendChild(el("div","rn2",names||"なし"));box.appendChild(w)}
+function nrm(t){return String(t||"").toLowerCase().replace(/[\s\u3000]/g,"").replace(/[\u30a1-\u30f6]/g,function(c){return String.fromCharCode(c.charCodeAt(0)-96)})}
+function advanceWolf(){var rd=data.round,key="w"+rd.n;if(advKey===key)return;advKey=key;roomRef.child("round/phase").set("result")}
+function renderWolf(rd,ps,ids,vs){
+ var box=$("vote"),isW=(me===rd.wolf),word=isW?rd.words.w:rd.words.c,ph=rd.phase||"talk";
+ box.classList.remove("hide");$("topic").classList.remove("spin");$("topic").textContent=word;
+ var nmOf=function(id){return ps[id]?ps[id].name:"（退出）"};
+ if(ph==="talk"){
+  if(box.dataset.k!=="wt"+rd.n){box.dataset.k="wt"+rd.n;box.innerHTML="";
+   box.appendChild(el("div","hint","上があなたの単語です。会話で探り合い、違う単語の人を探しましょう"));
+   box.appendChild(el("div","hint","最初に話す人："+nmOf(rd.first)));
+   var tm=el("div","");tm.style.cssText="font-family:var(--serif);font-size:30px;text-align:center;color:var(--acc);margin-top:14px";box.appendChild(tm);
+   var left=180;var tk=function(){var m=Math.floor(left/60),s2=left%60;tm.textContent=left>0?"残り "+m+":"+(s2<10?"0":"")+s2:"時間です。投票へ進みましょう";left--};
+   var iv=setInterval(function(){if(left<0){clearInterval(iv);return}tk()},1000);timers.push(iv);tk()}
+  $("msg").textContent="話し終えたら、ホストが「投票へ」を押します";return}
+ var prevG=$("wfG")?$("wfG").value:"";
+ box.dataset.k="";box.innerHTML="";
+ if(ph==="vote"){
+  var done=ids.filter(function(i){return vs[i]!==undefined}).length;
+  if(isHost&&ids.length>1&&done>=ids.length){advanceWolf();return}
+  box.appendChild(el("div","hint","狼（違う単語の人）だと思う人に投票してください"));
+  ids.forEach(function(id){if(id===me)return;var b=el("button","opt"+(vs[me]===id?" sel":""),nmOf(id));b.onclick=function(){roomRef.child("votes/"+me).set(id)};box.appendChild(b)});
+  box.appendChild(el("div","hint","投票済み "+done+" / "+ids.length));
+  $("msg").textContent="誰が違う単語を持っている？";return}
+ var cnt={},all=0;ids.forEach(function(i){cnt[i]=0});
+ ids.forEach(function(i){var t=vs[i];if(t!==undefined&&cnt[t]!==undefined){cnt[t]++;all++}});
+ var so=ids.slice().sort(function(a,b){return cnt[b]-cnt[a]}),mx=cnt[so[0]]||0;
+ so.forEach(function(id){wrow(box,nmOf(id)+(id===rd.wolf?"（狼）":""),cnt[id],all||1,ids.filter(function(v){return vs[v]===id}).map(nmOf).join("、"),mx>0&&cnt[id]===mx)});
+ var tops=so.filter(function(id){return mx>0&&cnt[id]===mx}),caught=tops.length===1&&tops[0]===rd.wolf;
+ var info=el("div","ans");info.appendChild(el("div","an","ANSWER"));info.appendChild(el("div","at","狼："+nmOf(rd.wolf)+"\n市民の単語："+rd.words.c+"\n狼の単語："+rd.words.w));box.appendChild(info);
+ var win=null,msg="";
+ if(!caught){win="wolf";msg="狼の逃げ切り。狼の勝利です"}
+ else if(rd.guess===undefined){msg="狼を見破りました。狼は市民の単語を当てれば逆転です";
+  if(isW){var gi=el("input");gi.id="wfG";gi.placeholder="市民の単語を予想";gi.value=prevG;gi.style.marginTop="12px";box.appendChild(gi);var gb=el("button","opt","予想を送信");gb.onclick=function(){var v=gi.value.trim();if(v)roomRef.child("round/guess").set(v)};box.appendChild(gb)}
+  else box.appendChild(el("div","hint","狼の予想を待っています"))}
+ else{var ok=nrm(rd.guess)===nrm(rd.words.c);win=ok?"wolf":"cit";box.appendChild(el("div","hint","狼の予想："+rd.guess+"（"+(ok?"正解":"不正解")+"）"));msg=ok?"狼の逆転勝利です":"市民の勝利です"}
+ $("msg").textContent=msg;
+ if(isHost&&win&&!rd.scored){roomRef.child("round/scored").transaction(function(v){return v?undefined:true},function(e,c){if(!c)return;
+  if(win==="wolf"){if(ps[rd.wolf])roomRef.child("scores/"+rd.wolf).transaction(function(v){return(v||0)+2})}
+  else ids.forEach(function(i){if(i!==rd.wolf)roomRef.child("scores/"+i).transaction(function(v){return(v||0)+1})})})}
+}
+function shuf(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1)),t=a[i];a[i]=a[j];a[j]=t}return a}
+var advKey="";
+function drawFig(cv,seed){var W=cv.width,c=cv.getContext("2d"),s=seed>>>0;function rnd(){s=(s*1664525+1013904223)>>>0;return s/4294967296}
+ c.fillStyle="#fff";c.fillRect(0,0,W,W);var cols=["#222222","#e53935","#1e88e5","#43a047","#fdd835","#8e24aa"];c.lineCap="round";
+ var n=4+Math.floor(rnd()*4);
+ for(var i=0;i<n;i++){var col=cols[Math.floor(rnd()*cols.length)];c.fillStyle=col;c.strokeStyle=col;c.lineWidth=3+rnd()*8;
+  var k=Math.floor(rnd()*4),x=50+rnd()*(W-100),y=50+rnd()*(W-100),r=18+rnd()*50;c.beginPath();
+  if(k===0)c.arc(x,y,r,0,7);else if(k===1)c.rect(x-r,y-r/2,r*2,r);else if(k===2){c.moveTo(x,y-r);c.lineTo(x+r,y+r);c.lineTo(x-r,y+r);c.closePath()}else{c.moveTo(x-r,y);c.bezierCurveTo(x-r/2,y-r*1.5,x+r/2,y+r*1.5,x+r,y)}
+  if(k===3||rnd()<.4)c.stroke();else c.fill()}}
+function figEl(seed){var c=el("canvas","fig");c.width=360;c.height=360;drawFig(c,seed);return c}
+function lblOf(r){if(r.og)return r.type==="draw"?"　大喜利・イラスト":(r.fig!==undefined?"　大喜利・これは何？":"　大喜利・回答");returnlblOf(r)}
+var selMode="bakuro",HD={bakuro:"名前や本音を暴露し合うモード",wolf:"恋愛ワードでワードウルフ。違う単語を持つ狼を探すモード（3人以上）"};
+function setHome(){document.querySelectorAll(".hm").forEach(function(b){b.classList.toggle("on",b.dataset.m===selMode)});$("homeDesc").textContent=HD[selMode]}
+document.querySelectorAll(".hm").forEach(function(b){b.onclick=function(){selMode=b.dataset.m;setHome()}});setHome();
+function advance(){var rd=data.round,ids=Object.keys(data.players||{});
+ var key=rd.n+"|"+(rd.order?"o":"i")+(rd.vphase?"v":"");if(advKey===key)return;advKey=key;
+ if((rd.type==="say"||rd.type==="draw")&&!rd.order)roomRef.child("round").update({order:shuf(ids),shown:1});
+ else if(rd.og&&rd.vphase){var vs=data.votes||{},cnt={};
+  ids.forEach(function(i){var t=vs[i];if(t&&ids.indexOf(t)>=0)cnt[t]=(cnt[t]||0)+1});
+  Object.keys(cnt).forEach(function(i){roomRef.child("scores/"+i).transaction(function(v){return(v||0)+cnt[i]})});
+  roomRef.child("round/reveal").set(true)}
+ else roomRef.child("round/reveal").set(true)}
+
+function renderVote(){
+ var rd=data&&data.round,box=$("vote"),T=rd&&rd.type;
+ if(!rd||(T!=="vote"&&T!=="pvote"&&T!=="say"&&T!=="draw"&&T!=="wolf")||!voteReady){box.classList.add("hide");return}
+ var ps=data.players||{},ids=Object.keys(ps),vs=data.votes||{},an=(T==="draw"?data.draws:data.answers)||{};
+ if(T==="wolf"){renderWolf(rd,ps,ids,vs);return}
+ var src=(T==="say"||T==="draw")?an:vs,done=ids.filter(function(i){return src[i]!==undefined}).length;
+ var started=(T==="say"||T==="draw")?!!rd.order:!!rd.reveal;
+ if(isHost&&!started&&ids.length>1&&done>=ids.length){advance();return}
+ box.classList.remove("hide");
+ if(T==="draw"&&!started){
+  if(box.dataset.k!=="draw"+rd.n){box.dataset.k="draw"+rd.n;box.innerHTML="";buildCanvas(box)}
+  var dc=$("drCnt");if(dc)dc.textContent="提出済み "+done+" / "+ids.length;
+  $("msg").textContent="全員が提出すると、一人ずつ公開されます";
+  return}
+ if(T==="say"&&!started){
+  if(box.dataset.k!=="say"+rd.n){box.dataset.k="say"+rd.n;box.innerHTML="";
+   if(rd.fig!==undefined)box.appendChild(figEl(rd.fig));var ta=el("textarea");ta.id="sayTa";ta.maxLength=80;ta.rows=3;ta.placeholder=rd.og?"面白い答えを入力（80文字まで）":"あなたならどうする？（80文字まで）";ta.value=an[me]||"";box.appendChild(ta);
+   var sb=el("button","opt","回答を送信");sb.onclick=function(){var v=ta.value.trim();if(!v)return;roomRef.child("answers/"+me).set(v);sb.textContent="送信済み（もう一度押すと修正できます）"};box.appendChild(sb);
+   var ct=el("div","hint","");ct.id="sayCnt";box.appendChild(ct)}
+  $("sayCnt").textContent="回答済み "+done+" / "+ids.length;
+  $("msg").textContent="全員が送信すると、一人ずつ公開されます";
+  return}
+ if(rd.og&&started&&rd.vphase&&(T==="say"||T==="draw")){
+  var vd=ids.filter(function(i){return vs[i]!==undefined}).length;
+  if(isHost&&!rd.reveal&&ids.length>1&&vd>=ids.length){advance();return}
+  box.dataset.k="";box.innerHTML="";
+  if(rd.fig!==undefined)box.appendChild(figEl(rd.fig));
+  var oo=rd.order.filter(function(i){return ps[i]});
+  var content=function(h,id){if(T==="draw"&&an[id]){var im=el("img","dr");im.src=an[id];h.appendChild(im)}else h.appendChild(el("div","at",an[id]!==undefined&&an[id]!==""?an[id]:"（なし）"))};
+  if(!rd.reveal){
+   box.appendChild(el("div","hint","一番面白かった回答に投票（自分には投票できません）"));
+   oo.forEach(function(id){var b=el("button","opt vt"+(vs[me]===id?" sel":""));b.appendChild(el("div","an",ps[id].name+(id===me?"（あなた）":"")));content(b,id);b.disabled=(id===me);b.onclick=function(){roomRef.child("votes/"+me).set(id)};box.appendChild(b)});
+   box.appendChild(el("div","hint","投票済み "+vd+" / "+ids.length));
+   $("msg").textContent="面白かった人に投票してください";
   }else{
-    code=(cv||'').trim();ref=db.ref('rooms/'+code);
-    const s=await ref.get();
-    if(!s.exists()||s.val().phase!=='lobby'){err='入れるルームが見つかりません';return render()}
-    if(Object.keys(s.val().players).length>=8){err='満員です';return render()}
-    await ref.child('players/'+me).set({name});
-    await ref.child('order').transaction(o=>[...(o||[]),me]);
+   var cn={},all=0;ids.forEach(function(i){cn[i]=0});
+   ids.forEach(function(i){var t=vs[i];if(t!==undefined&&cn[t]!==undefined){cn[t]++;all++}});
+   var so=ids.slice().sort(function(a,b){return cn[b]-cn[a]}),mx=cn[so[0]]||0;
+   so.forEach(function(id){row(ps[id].name,cn[id],all||1,nm(ids.filter(function(v){return vs[v]===id})),mx>0&&cn[id]===mx)});
+   var tp=so.filter(function(id){return mx>0&&cn[id]===mx});
+   $("msg").textContent=!tp.length?"投票がありませんでした":"一番面白かったのは "+nm(tp)+" さん";
   }
-  mode='online';err='';
-  ref.on('value',s=>{S=s.val();if(!S){leave();return}render()});
-}
-function leave(){if(ref)ref.off();ref=null;S=null;mode=null;me=null;page='home';shown=false;render()}
-const isHost=()=>mode==='local'||me===S.host;
-
-function lobby(){return `<h2>ルーム ${esc(code)}</h2><p class="mut">この番号をみんなに伝えてね。</p>
-<div class="chips">${ids().map(i=>`<span class="chip">${nm(i)}</span>`).join('')}</div>
-${isHost()?`<button ${ids().length<3?'disabled':''} onclick="start()">ゲーム開始(3人〜)</button>`:'<p class="mut">ホストの開始を待っています…</p>'}
-<button class="sub" onclick="leave()">ぬける</button>`}
-
-/* ---------- ゲーム進行 ---------- */
-function reveal(){
-  if(mode==='local'){
-    const id=ids()[S.ri];
-    if(!shown)return `<h2>${nm(id)}さんの番</h2><p class="mut">他の人に見えないように、端末を受け取ってね。</p><button onclick="shown=true;render()">${nm(id)}です。お題を見る</button>`;
-    return `<h2>${nm(id)}さんのお題</h2><div class="card"><div class="word">${esc(wordOf(id))}</div></div><p class="mut">覚えたら次の人へ渡そう。</p><button onclick="nextReveal()">覚えた</button>`;
+  return}
+ box.dataset.k="";box.innerHTML="";
+ function row(label,n,tot,names,win){var w=el("div","res"+(win?" win":"")),top=el("div","rtop");
+  top.appendChild(el("span","",label));top.appendChild(el("span","rc",n+"票"));w.appendChild(top);
+  var bar=el("div","bar"),f=el("i");f.style.width=Math.round(n/tot*100)+"%";bar.appendChild(f);w.appendChild(bar);
+  w.appendChild(el("div","rn2",names||"なし"));box.appendChild(w)}
+ function nm(list){return list.map(function(id){return ps[id].name}).join("、")}
+ if(T==="vote"){
+  var opts=[rd.a,rd.b];
+  if(!started){
+   opts.forEach(function(o,i){var b=el("button","opt"+(vs[me]===i?" sel":""),o);b.onclick=function(){roomRef.child("votes/"+me).set(i)};box.appendChild(b)});
+   box.appendChild(el("div","hint","投票済み "+done+" / "+ids.length+(vs[me]===undefined?"　どちらかを選んでください":"　他の人を待っています（選び直せます）")));
+   $("msg").textContent="全員で多数決";
+  }else{
+   var c=[0,0];ids.forEach(function(id){if(vs[id]!==undefined)c[vs[id]]++});
+   var tot=(c[0]+c[1])||1;
+   opts.forEach(function(o,i){row(o,c[i],tot,nm(ids.filter(function(id){return vs[id]===i})),c[i]>c[1-i])});
+   $("msg").textContent=c[0]===c[1]?"同票でした":(c[0]>c[1]?rd.a:rd.b)+" が多数派です";
   }
-  return `<h2>あなたのお題</h2><p class="mut">ハートをタップで表示 / 非表示。</p>
-  <button class="seal" aria-label="お題を見る" onclick="shown=!shown;render()">♥</button>
-  ${shown?`<div class="card"><div class="word">${esc(wordOf(me))}</div></div>`:''}
-  ${isHost()?'<button onclick="talk()">話し合いスタート</button>':'<p class="mut">全員が見終わったらホストが始めます。</p>'}`;
-}
-function nextReveal(){shown=false;S.ri++;S.ri>=ids().length?talk():render()}
-function talk(){shown=false;upd({phase:'talk',end:Date.now()+18e4})}
-
-function talkV(){return `<h2>話し合い</h2><div class="big" id="t">${fmt(S.end-Date.now())}</div>
-<div class="card"><p>お題を直接言わずに、「それってどんなとき?」と質問し合おう。自分のお題が少数派だと感じたら、うまく合わせよう。</p></div>
-${isHost()?'<button onclick="upd({phase:\'vote\'})">投票へ</button>':'<p class="mut">ホストが投票を始めます。</p>'}`}
-
-function voteV(){
-  const v=S.votes||{},n=ids().length;
-  if(mode==='local'){
-    const id=ids()[S.vi];
-    if(!shown)return `<h2>投票 ${S.vi+1}/${n}</h2><p class="mut">端末を${nm(id)}さんに渡してね。</p><button onclick="shown=true;render()">${nm(id)}です</button>`;
-    return `<h2>${nm(id)}さん、だれがオオカミ?</h2>${ids().filter(i=>i!==id).map(i=>`<button class="sub" onclick="castLocal('${i}')">${nm(i)}</button>`).join('')}`;
+ }else if(T==="pvote"){
+  if(!started){
+   ids.forEach(function(id){var b=el("button","opt"+(vs[me]===id?" sel":""),ps[id].name+(id===me?"（自分）":""));b.onclick=function(){roomRef.child("votes/"+me).set(id)};box.appendChild(b)});
+   box.appendChild(el("div","hint","投票済み "+done+" / "+ids.length+(vs[me]===undefined?"　メンバーから1人選んでください":"　他の人を待っています（選び直せます）")));
+   $("msg").textContent="この中から1人を指名";
+  }else{
+   var cnt={},all=0;ids.forEach(function(id){cnt[id]=0});
+   ids.forEach(function(id){var t=vs[id];if(t!==undefined&&cnt[t]!==undefined){cnt[t]++;all++}});
+   var sorted=ids.slice().sort(function(a,b){return cnt[b]-cnt[a]}),mx=cnt[sorted[0]]||0;
+   sorted.forEach(function(id){row(ps[id].name,cnt[id],all||1,nm(ids.filter(function(v){return vs[v]===id})),mx>0&&cnt[id]===mx)});
+   var tops=sorted.filter(function(id){return mx>0&&cnt[id]===mx});
+   $("msg").textContent=!tops.length?"投票がありませんでした":(tops.length>1?nm(tops)+" が同票で1位です":nm(tops)+" さんが1位です");
   }
-  if(v[me])return `<h2>投票ずみ</h2><p class="mut">みんなを待っています(${Object.keys(v).length}/${n})</p>`;
-  return `<h2>だれがオオカミ?</h2>${ids().filter(i=>i!==me).map(i=>`<button class="sub" onclick="ref.update({'votes/${me}':'${i}'})">${nm(i)}</button>`).join('')}`;
+ }else{
+  var ord=rd.order,sh=Math.min(rd.shown||0,ord.length);if(rd.fig!==undefined)box.appendChild(figEl(rd.fig));
+  box.appendChild(el("div","hint","回答 "+sh+" / "+ord.length));
+  for(var k=sh-1;k>=0;k--){var id=ord[k],cd=el("div","ans"+(k===sh-1?" pop":""));
+   cd.appendChild(el("div","an",ps[id]?ps[id].name:"（退出）"));
+   if(T==="draw"&&an[id]){var im=el("img","dr");im.src=an[id];cd.appendChild(im)}else cd.appendChild(el("div","at",an[id]!==undefined&&an[id]!==""?an[id]:(T==="draw"?"（未提出）":"（未回答）")));box.appendChild(cd)}
+  $("msg").textContent=sh>=ord.length?"全員分が出そろいました":"";
+ }
 }
-function castLocal(t){const id=ids()[S.vi];S.votes=S.votes||{};S.votes[id]=t;S.vi++;shown=false;S.vi>=ids().length?upd({phase:'result'}):render()}
-
-function result(){
-  const v=S.votes||{},c={};Object.values(v).forEach(t=>c[t]=(c[t]||0)+1);
-  const mx=Math.max(0,...Object.values(c)),top=ids().filter(i=>c[i]===mx);
-  const caught=top.length===1&&top[0]===S.wolf;
-  return `<h2>${caught?'オオカミを見つけた!':'オオカミの勝ち!'}</h2>
-  <div class="card">${ids().map(i=>`<div class="vote"><span>${nm(i)}${i===S.wolf?' 🐺':''}</span><span>${c[i]||0}票<span class="bar" style="width:${(c[i]||0)*24}px"></span></span></div>`).join('')}</div>
-  <div class="card"><p class="mut">みんなのお題</p><div class="word" style="padding:6px 0">${esc(S.maj)}</div>
-  <p class="mut">オオカミ(${nm(S.wolf)})のお題</p><div class="word" style="padding:6px 0;color:var(--lv)">${esc(S.wl)}</div></div>
-  ${caught?'<p>見つかったオオカミは、みんなのお題を当てられたら逆転勝ち!</p>':''}
-  ${isHost()?'<button onclick="start()">もう一度</button>':'<p class="mut">ホストが次を始めます。</p>'}
-  <button class="sub" onclick="leave()">ホームへ</button>`;
+function play(r,names){
+ timers.forEach(clearTimeout);timers.forEach(clearInterval);timers=[];busy=true;voteReady=false;$("draw").disabled=true;
+ if(r.type==="wolf"){busy=false;voteReady=true;$("game").classList.remove("hide");$("rn").textContent="第"+r.n+"問　ワードウルフ";$("msg").textContent="";$("pickBox").classList.add("hide");$("topic").classList.remove("spin");$("topic").classList.remove("pop");void $("topic").offsetWidth;$("topic").classList.add("pop");$("vote").dataset.k="";$("draw").disabled=!data||Object.keys(data.players||{}).length<3;renderVote();return}
+ var isV=(r.type==="vote"||r.type==="pvote"||r.type==="say"||r.type==="draw");
+ $("game").classList.remove("hide");$("rn").textContent="第"+r.n+"問"+({vote:"　多数決",pvote:"　指名投票",say:"　全員回答",draw:"　お絵かき"})[r.type]||"";$("msg").textContent="";
+ $("vote").classList.add("hide");$("vote").dataset.k="";$("pickBox").classList.toggle("hide",isV);
+ $("topic").classList.remove("pop");$("pick").classList.remove("pop");$("pick").textContent="";
+ $("topic").classList.add("spin");$("pick").classList.remove("spin");
+ var i1=setInterval(function(){$("topic").textContent=TOPICS[Math.floor(Math.random()*TOPICS.length)]},70);timers.push(i1);
+ timers.push(setTimeout(function(){clearInterval(i1);$("topic").classList.remove("spin");$("topic").textContent=r.topic;void $("topic").offsetWidth;$("topic").classList.add("pop");
+  if(isV){busy=false;voteReady=true;$("draw").disabled=!data||Object.keys(data.players||{}).length<2;renderVote();return}
+  $("pick").classList.add("spin");
+  var i2=setInterval(function(){$("pick").textContent=names[Math.floor(Math.random()*names.length)]},80);timers.push(i2);
+  timers.push(setTimeout(function(){clearInterval(i2);$("pick").classList.remove("spin");$("pick").textContent=r.name;void $("pick").offsetWidth;$("pick").classList.add("pop");
+   $("msg").textContent=r.name+" さん、答えてください";busy=false;if(data)$("draw").disabled=Object.keys(data.players||{}).length<2},2400));
+ },2600));
 }
-
-function render(){
-  clearInterval(tick);
-  app.innerHTML=S?({lobby,reveal,talk:talkV,vote:voteV,result}[S.phase]||home)():({home,setup,join}[page])();
-  if(S&&S.phase==='talk')tick=setInterval(()=>{const e=$('#t');if(e)e.textContent=fmt(S.end-Date.now())},500);
-  if(mode==='online'&&S&&S.phase==='vote'&&me===S.host&&Object.keys(S.votes||{}).length>=ids().length)upd({phase:'result'});
-  if(mode==='online'&&S&&S.phase!=='reveal')shown=false;
-}
-render();
 </script>
 </body>
 </html>
